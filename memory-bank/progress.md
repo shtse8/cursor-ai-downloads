@@ -1,32 +1,36 @@
-<!-- Version: 1.4 | Last Updated: 2025-06-06 -->
+<!-- Version: 1.5 | Last Updated: 2025-06-06 -->
 
 # Project Progress & Status
 
 ## 1. Current Status
 
-- **Overall**: Project is established and functional. Core update mechanism via GitHub Actions is fixed and correctly updates both `version-history.json` and the `README.md` table (last 10 versions). Memory Bank initialized and up-to-date.
-- **Data**: `version-history.json` contains data up to version 0.48.7. Potential data quality issues (duplicates, missing links) remain unaddressed.
-- **Presentation**: `README.md` has been rewritten, includes markers for the table, and displays only the last 10 versions, updated correctly by the automated workflow.
-- **Automation**: GitHub Actions workflow runs hourly, executing `update-cursor-links.ts` followed by `update-readme-from-history.ts`, ensuring data and presentation consistency.
-- **Scripts**: Core update scripts (`update-cursor-links.ts`, `update-readme-from-history.ts`) are functioning correctly within the automated workflow. Other maintenance scripts exist.
-- **Memory Bank**: Updated to reflect the fixed core update logic and confirm the next steps.
+- **Overall**: Project is established and functional. Core update mechanism and GitHub Pages deployment are automated via GitHub Actions. Memory Bank is up-to-date.
+- **Data**: `version-history.json` contains data up to version 0.48.7. Potential data quality issues remain unaddressed.
+- **Presentation**: 
+    - `README.md` displays the latest 10 versions, updated correctly by the workflow.
+    - A basic GitHub Pages site exists in `docs/` providing a searchable full version history.
+- **Automation**: 
+    - `update-cursor-links.yml` workflow runs hourly, updating data and README.
+    - `deploy-gh-pages.yml` workflow runs on pushes to `main`, deploying the site from `docs/`.
+- **Scripts**: Core update scripts are functioning. Site script (`docs/script.js`) fetches and displays data. Other maintenance scripts exist.
+- **Memory Bank**: Updated to reflect the creation of the GitHub Pages site and deployment workflow.
 
 ## 2. What Works
 
 - Centralized tracking of Cursor download links in `version-history.json`.
 - Automated hourly checks for new versions and updates to `version-history.json`.
 - Automated regeneration of the `README.md` table with the latest 10 versions.
-- `README.md` provides a concise, user-facing view of the latest 10 versions and project info.
+- Automated deployment of the GitHub Pages site from the `docs/` directory.
+- Basic GitHub Pages site displaying searchable full version history.
 - Memory Bank system is active and updated.
-- Git history reflects recent changes and fixes.
+- Git history reflects recent changes.
 
 ## 3. What's Left / Next Steps
 
-1.  **GitHub Pages Site - Planning**: Design the static site for full version search and latest download functionality. (Current Focus)
-2.  **GitHub Pages Site - Implementation**: Build the static site (HTML/CSS/JS) and configure the deployment workflow.
-3.  **Dependency Review**: Examine `package.json` and `.devcontainer/devcontainer.json`.
-4.  **Data Cleanup (Optional/Future)**: Address potential duplicate entries and missing links in `version-history.json`.
-5.  **Ongoing Maintenance**: Monitor workflow runs and address any future data inconsistencies or API changes from Cursor.
+1.  **Review Dependencies**: Examine `package.json` and `.devcontainer/devcontainer.json`. (Current Focus)
+2.  **Data Cleanup (Optional/Future)**: Address potential duplicate entries and missing links in `version-history.json`.
+3.  **Ongoing Maintenance**: Monitor workflow runs (update and deployment) and address any future issues.
+4.  **GitHub Pages Site Enhancements (Future)**: Consider adding platform filtering or other improvements.
 
 ## 4. Known Issues / Blockers
 

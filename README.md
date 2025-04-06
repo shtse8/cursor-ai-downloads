@@ -13,6 +13,8 @@ The latest detected version is **0.48.7** (released on 2025-04-02).
 
 ---
 
+➡️ **For the complete, searchable version history, visit the [GitHub Pages site](https://shtse8.github.io/cursor-ai-downloads/).**
+
 ## Recent Download Links (Last 10 Versions)
 
 | Version | Date | 🍎 macOS (Universal) | 🍎 macOS (Intel) | 🍎 macOS (Apple Silicon) | 🪟 Windows (x64) | 🪟 Windows (ARM64) | 🐧 Linux (x64) | 🐧 Linux (ARM64) |
