@@ -1,4 +1,4 @@
-<!-- Version: 1.8 | Last Updated: 2025-06-06 -->
+<!-- Version: 1.9 | Last Updated: 2025-06-06 -->
 
 # Active Context
 
@@ -19,11 +19,10 @@
 - **Improved Layout & Content (Based on Feedback)**:
     - Updated README intro and added a dedicated 'Quick Download: Latest Version' section.
     - Updated GitHub Pages (`docs/index.html`, `docs/script.js`) to include a similar latest version section and Buy Me a Coffee link.
-- **Optimized Table Layout (Based on Feedback)**:
-    - Modified README and GitHub Pages tables to group download links by OS.
-    - **Further optimized tables by using compact symbol links (e.g., 🍎U, 🪟64) instead of text links.**
-    - Updated `src/update-readme-from-history.ts`, `docs/script.js`, and `docs/style.css` to implement and style the symbol links.
-- **Committed Changes**: Committed all updates to Git.
+- **Reverted Table Layout Optimization (Based on Feedback)**:
+    - Restored README and GitHub Pages tables to the original multi-column layout (separate column for each platform/architecture) using 'Download' text links.
+    - Reverted changes in `src/update-readme-from-history.ts`, `docs/index.html`, `docs/script.js`, and `docs/style.css`.
+- **Committed Changes**: Committed all updates and reverts to Git.
 
 ## 3. Next Steps
 
@@ -37,4 +36,4 @@
 - Confirmed the primary update mechanism now correctly relies on `update-cursor-links.ts` followed by `update-readme-from-history.ts` executed via the GitHub Action.
 - Confirmed the GitHub Pages site will be deployed automatically from the `docs/` directory via a separate GitHub Action.
 - Other scripts in `src/` are likely for manual data maintenance/correction.
-- Decided to limit `README.md` history display and create a separate static page for full history search, both featuring a prominent latest version download section and optimized table layout using symbol links.
+- Decided to limit `README.md` history display and create a separate static page for full history search, both featuring a prominent latest version download section and using the original multi-column table layout.
