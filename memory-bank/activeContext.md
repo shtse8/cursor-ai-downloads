@@ -1,4 +1,4 @@
-<!-- Version: 1.9 | Last Updated: 2025-06-06 -->
+<!-- Version: 1.11 | Last Updated: 2025-06-06 -->
 
 # Active Context
 
@@ -20,9 +20,12 @@
     - Updated README intro and added a dedicated 'Quick Download: Latest Version' section.
     - Updated GitHub Pages (`docs/index.html`, `docs/script.js`) to include a similar latest version section and Buy Me a Coffee link.
 - **Reverted Table Layout Optimization (Based on Feedback)**:
-    - Restored README and GitHub Pages tables to the original multi-column layout (separate column for each platform/architecture) using 'Download' text links.
-    - Reverted changes in `src/update-readme-from-history.ts`, `docs/index.html`, `docs/script.js`, and `docs/style.css`.
-- **Committed Changes**: Committed all updates and reverts to Git.
+    - Restored README and GitHub Pages tables to the original multi-column layout.
+    - Reverted changes in related scripts and CSS.
+- **Fixed README Formatting**: Removed a duplicate table header.
+- **Fixed Pages Layout (Based on Feedback)**:
+    - Modified GitHub Pages 'Latest Version' section (`docs/script.js`, `docs/style.css`) to display links vertically for better responsiveness.
+- **Committed Changes**: Committed all updates, reverts, and fixes to Git.
 
 ## 3. Next Steps
 
@@ -36,4 +39,4 @@
 - Confirmed the primary update mechanism now correctly relies on `update-cursor-links.ts` followed by `update-readme-from-history.ts` executed via the GitHub Action.
 - Confirmed the GitHub Pages site will be deployed automatically from the `docs/` directory via a separate GitHub Action.
 - Other scripts in `src/` are likely for manual data maintenance/correction.
-- Decided to limit `README.md` history display and create a separate static page for full history search, both featuring a prominent latest version download section and using the original multi-column table layout.
+- Decided to limit `README.md` history display and create a separate static page for full history search, both featuring a prominent latest version download section (vertically listed links on Pages) and using the original multi-column table layout.
