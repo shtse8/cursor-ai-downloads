@@ -213,56 +213,6 @@ async function updateReadme(): Promise<boolean> {
   const websiteUpdateRegex = /(Official Download Link for The latest version from \[Cursor AI's Website\]\(https:\/\/www\.cursor\.com\/downloads\) \(on `)([^`]+)(`\) is:)/;
   readmeContent = readmeContent.replace(websiteUpdateRegex, `$1${currentDate}$3`);
 
-  // Add new row to the table for the latest version
-  const tableStartRegex = /\| Version \| Date \| Mac Installer \| Windows Installer \| Linux Installer \|\n\| --- \| --- \| --- \| --- \| --- \|/;
-
-  // Generate Mac links section
-  let macLinks = '';
-  if (results.mac) {
-    const macUrls = PLATFORMS.mac.platforms.map(platform => {
-      if (results.mac[platform] && results.mac[platform].url) {
-        return `[${platform}](${results.mac[platform].url})`;
-      }
-      return null;
-    }).filter(Boolean);
-
-    macLinks = macUrls.join(' <br>');
-  }
-
-  // Generate Windows links section
-  let windowsLinks = '';
-  if (results.windows) {
-    const winUrls = PLATFORMS.windows.platforms.map(platform => {
-      if (results.windows[platform] && results.windows[platform].url) {
-        return `[${platform}](${results.windows[platform].url})`;
-      }
-      return null;
-    }).filter(Boolean);
-
-    windowsLinks = winUrls.join('<br>');
-  }
-
-  // Generate Linux link
-  let linuxLinks = 'Not Ready';
-  if (results.linux) {
-    const linuxUrls = PLATFORMS.linux.platforms.map(platform => {
-      if (results.linux[platform] && results.linux[platform].url) {
-        return `[${platform}](${results.linux[platform].url})`;
-      }
-      return null;
-    }).filter(Boolean);
-
-    if (linuxUrls.length > 0) {
-      linuxLinks = linuxUrls.join('<br>');
-    }
-  }
-
-  // New table row
-  const newRow = `\n| ${latestVersion} | ${currentDate} | ${macLinks} | ${windowsLinks} | ${linuxLinks} |`;
-
-  // Insert the new row after the table header
-  readmeContent = readmeContent.replace(tableStartRegex, `$&${newRow}`);
-
   // Save the updated README using utility function
   const readmeSaved = writeFileContent(readmePath, readmeContent, '.update-backup');
   if (readmeSaved) {

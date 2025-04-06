@@ -31,6 +31,9 @@ jobs:
       - name: Run update script
         run: bun src/update-cursor-links.ts
         
+      - name: Run README update script # Regenerate table with latest 10 versions
+        run: bun src/update-readme-from-history.ts
+        
       - name: Check for changes
         id: git-check
         run: |
