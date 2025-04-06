@@ -1,0 +1,42 @@
+<!-- Version: 1.0 | Last Updated: 2025-06-04 -->
+
+# Project-Specific Rules & Preferences
+
+## 1. Language Protocol
+
+- **User Interaction**: Cantonese (香港語)
+- **Technical Content**: English (Code, Comments, Documentation, Commits, File Content)
+
+## 2. Tool Priority
+
+1.  **File Operations**: `filesystem-mcp` (Use batch operations where possible)
+2.  **GitHub Operations**: `gh` CLI (via `execute_command`)
+3.  **System Commands**: Windows Batch (`execute_command`, use only when necessary)
+
+## 3. Code Structure
+
+- **File Size Limit**: Files reaching or exceeding 500 Lines of Code (LoC) MUST be split into multiple, logically separated files.
+
+## 4. Version Control
+
+- **Commits**: Write commit messages in English. Commit frequently after significant changes or task completion.
+- **Branching**: Use feature branches for significant changes; keep `main` stable.
+
+## 5. Memory Bank
+
+- **Updates**: Update relevant Memory Bank files after significant changes, discovery of new patterns, or upon user request (`update memory bank`). Always update the version header.
+- **Reading**: Read ALL Memory Bank files at the start of EVERY task.
+
+## 6. Research & Testing
+
+- **Research**: Utilize MCP tools (`brave-search`, `github`, `playwright`, `pdf-reader`) for complex problem-solving.
+- **Testing**: Perform self-testing using available tools before relying on user confirmation. Request specific tool installation if necessary.
+
+## 7. Context Management
+
+- Follow the defined protocol when context limit approaches 200k characters (Save state, Update MB, Focus, Commit, New Session).
+
+## 8. Project Specifics
+
+- **Data Integrity**: Prioritize accuracy of download links and version information.
+- **Automation**: Maintain and improve the GitHub Actions workflow for reliable updates.
