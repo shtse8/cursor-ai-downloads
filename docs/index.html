@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cursor AI Version History</title>
-    <meta name="description" content="A searchable history of official Cursor AI download links.">
+    <title>Cursor AI Downloads Archive</title>
+    <meta name="description" content="The ultimate archive for official Cursor AI download links. Searchable history for all versions.">
     <!-- Link to Pico.css for simple styling -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <!-- Link to custom styles -->
@@ -13,32 +13,42 @@
 <body>
     <main class="container">
         <header>
-            <h1>Cursor AI Version History 💾</h1>
-            <p>A searchable history of official download links for the <a href="https://cursor.sh/" target="_blank" rel="noopener noreferrer">Cursor AI</a> code editor.</p>
+            <h1>Cursor AI Downloads Archive 🚀</h1>
+            <p><strong>Never miss a version!</strong> Your ultimate, searchable archive for official Cursor AI download links.</p>
             <p>Maintained by the <a href="https://github.com/shtse8/cursor-ai-downloads" target="_blank" rel="noopener noreferrer">shtse8/cursor-ai-downloads</a> repository.</p>
         </header>
 
+        <section id="latest-version-section">
+             <h2>Quick Download: Latest Version ✨</h2>
+             <div id="latest-version-details" aria-live="polite">
+                 <!-- Latest version details will be loaded here by script.js -->
+                 <p aria-busy="true">Fetching latest version...</p>
+             </div>
+        </section>
+
+        <hr>
+
         <section>
-            <h2>Search Versions</h2>
+            <h2>Full Version History</h2>
             <input type="search" id="search-input" name="search" placeholder="Search by version (e.g., 0.48.7)...">
         </section>
 
         <section id="version-table-section">
-            <h2>Download Links</h2>
             <div id="loading-indicator" aria-busy="true">Loading version history...</div>
             <div class="overflow-auto"> <!-- Wrapper for horizontal scrolling on small screens -->
                 <table id="version-table" role="grid" style="display: none;"> <!-- Initially hidden -->
                     <thead>
                         <tr>
+                            <!-- Table headers will be updated by script.js for brevity -->
                             <th>Version</th>
                             <th>Date</th>
-                            <th>🍎 macOS (Universal)</th>
-                            <th>🍎 macOS (Intel)</th>
-                            <th>🍎 macOS (Apple Silicon)</th>
-                            <th>🪟 Windows (x64)</th>
-                            <th>🪟 Windows (ARM64)</th>
-                            <th>🐧 Linux (x64)</th>
-                            <th>🐧 Linux (ARM64)</th>
+                            <th>macOS Uni</th>
+                            <th>macOS Intel</th>
+                            <th>macOS Apple</th>
+                            <th>Win x64</th>
+                            <th>Win ARM64</th>
+                            <th>Linux x64</th>
+                            <th>Linux ARM64</th>
                         </tr>
                     </thead>
                     <tbody id="version-table-body">
@@ -53,7 +63,7 @@
             <small>
                 Data sourced from official Cursor channels. This project is not affiliated with Cursor AI. |
                 <a href="https://github.com/shtse8/cursor-ai-downloads/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT License</a> |
-                Support this project: <a href="https://buymeacoffee.com/shtse8" target="_blank" rel="noopener noreferrer">Buy Me a Coffee</a>
+                Support this project: <a href="https://buymeacoffee.com/shtse8" target="_blank" rel="noopener noreferrer">Buy Me a Coffee ☕</a>
             </small>
         </footer>
     </main>
