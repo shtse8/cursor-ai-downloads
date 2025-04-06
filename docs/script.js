@@ -25,15 +25,16 @@ document.addEventListener('DOMContentLoaded', () => {
      * Generates a download link string for the latest version section.
      * @param {string|undefined} url - The download URL.
      * @param {string} label - The platform label.
-     * @returns {string} HTML string for the link or 'N/A'.
+     * @returns {string} HTML string for the link or null if no URL.
      */
-     function createLatestLink(url, label) {
-        return url ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>` : `${label}: N/A`;
+     function createLatestLinkListItem(url, label) {
+        // Return null if no URL, so we can filter later
+        return url ? `<li><a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a></li>` : null;
     }
 
 
     /**
-     * Renders the latest version details with individual links arranged vertically per OS.
+     * Renders the latest version details using vertical lists (ul/li).
      * @param {object|undefined} latestVersion - The latest version entry object.
      */
     function renderLatestVersion(latestVersion) {
@@ -47,30 +48,33 @@ document.addEventListener('DOMContentLoaded', () => {
         const { version, date, platforms } = latestVersion;
         const displayDate = date || 'N/A';
 
-        // Create individual links
-        const macUniLink = createLatestLink(platforms['darwin-universal'], 'macOS Universal');
-        const macX64Link = createLatestLink(platforms['darwin-x64'], 'macOS Intel');
-        const macArm64Link = createLatestLink(platforms['darwin-arm64'], 'macOS Apple Silicon');
-        const winX64Link = createLatestLink(platforms['win32-x64'], 'Windows x64');
-        const winArm64Link = createLatestLink(platforms['win32-arm64'], 'Windows ARM64');
-        const linuxX64Link = createLatestLink(platforms['linux-x64'], 'Linux x64');
-        const linuxArm64Link = createLatestLink(platforms['linux-arm64'], 'Linux ARM64');
+        // Create list items, filter out nulls (where URL didn't exist)
+        const macLinks = [
+            createLatestLinkListItem(platforms['darwin-universal'], 'macOS Universal'),
+            createLatestLinkListItem(platforms['darwin-x64'], 'macOS Intel'),
+            createLatestLinkListItem(platforms['darwin-arm64'], 'macOS Apple Silicon')
+        ].filter(Boolean); // Filter out null list items
 
-        // Filter out N/A links
-        const macLinksArr = [macUniLink, macX64Link, macArm64Link].filter(link => !link.includes(': N/A'));
-        const winLinksArr = [winX64Link, winArm64Link].filter(link => !link.includes(': N/A'));
-        const linuxLinksArr = [linuxX64Link, linuxArm64Link].filter(link => !link.includes(': N/A'));
+        const winLinks = [
+            createLatestLinkListItem(platforms['win32-x64'], 'Windows x64'),
+            createLatestLinkListItem(platforms['win32-arm64'], 'Windows ARM64')
+        ].filter(Boolean);
 
-        // Build details string using <br> for vertical layout within OS groups
+        const linuxLinks = [
+            createLatestLinkListItem(platforms['linux-x64'], 'Linux x64'),
+            createLatestLinkListItem(platforms['linux-arm64'], 'Linux ARM64')
+        ].filter(Boolean);
+
+        // Build details string using lists
         let details = `<p><strong>Version: ${version}</strong> (${displayDate})</p>`;
-        if (macLinksArr.length > 0) {
-            details += `<div><strong>macOS:</strong><br>${macLinksArr.join('<br>')}</div>`;
+        if (macLinks.length > 0) {
+            details += `<div><strong>macOS:</strong><ul>${macLinks.join('')}</ul></div>`;
         }
-        if (winLinksArr.length > 0) {
-            details += `<div><strong>Windows:</strong><br>${winLinksArr.join('<br>')}</div>`;
+        if (winLinks.length > 0) {
+            details += `<div><strong>Windows:</strong><ul>${winLinks.join('')}</ul></div>`;
         }
-        if (linuxLinksArr.length > 0) {
-            details += `<div><strong>Linux:</strong><br>${linuxLinksArr.join('<br>')}</div>`;
+        if (linuxLinks.length > 0) {
+            details += `<div><strong>Linux:</strong><ul>${linuxLinks.join('')}</ul></div>`;
         }
 
         latestVersionDetailsDiv.innerHTML = details;

@@ -21,23 +21,29 @@ header p {
 }
 #latest-version-details p { /* Style the version/date line */
     margin-bottom: 0.75rem;
+    font-weight: bold;
 }
-#latest-version-details div { /* Style each OS group */
-    margin-bottom: 0.5rem;
+#latest-version-details div { /* Style each OS group container */
+    margin-bottom: 0.75rem;
 }
-#latest-version-details strong { /* Style the OS label */
-     display: inline-block;
-     /* width: 70px; */ /* Remove fixed width */
-     margin-right: 0.5rem;
+#latest-version-details div strong { /* Style the OS label (e.g., macOS:) */
+     display: block; /* Make OS label take its own line */
+     margin-bottom: 0.25rem;
+     font-weight: bold;
+}
+#latest-version-details ul { /* Style the list of links */
+    list-style: none;
+    padding-left: 1rem; /* Indent the list */
+    margin: 0;
+}
+#latest-version-details li { /* Style each link item */
+    margin-bottom: 0.3rem;
 }
 #latest-version-details a {
-    display: block; /* Make links stack vertically */
-    margin-left: 1rem; /* Indent links under OS label */
-    margin-bottom: 0.25rem;
+    /* display: block; */ /* No longer needed as li handles block */
+    /* margin-left: 1rem; */ /* No longer needed as ul handles indent */
+    /* margin-bottom: 0.25rem; */ /* Handled by li */
     line-height: 1.4;
-}
-#latest-version-details a:last-child {
-    margin-bottom: 0;
 }
 
 
