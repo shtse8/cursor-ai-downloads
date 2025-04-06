@@ -1,4 +1,4 @@
-<!-- Version: 1.6 | Last Updated: 2025-06-06 -->
+<!-- Version: 1.7 | Last Updated: 2025-06-06 -->
 
 # Active Context
 
@@ -18,9 +18,11 @@
 - **Set up Deployment Workflow**: Created `.github/workflows/deploy-gh-pages.yml`.
 - **Improved Layout & Content (Based on Feedback)**:
     - Updated README intro and added a dedicated 'Quick Download: Latest Version' section.
-    - Shortened table headers in README for better readability.
-    - Updated `src/update-readme-from-history.ts` to populate the new latest version section in README.
-    - Updated GitHub Pages (`docs/index.html`, `docs/script.js`) to include a similar latest version section, adjusted intro text, and ensured Buy Me a Coffee link is present.
+    - Updated GitHub Pages (`docs/index.html`, `docs/script.js`) to include a similar latest version section and Buy Me a Coffee link.
+- **Optimized Table Layout (Based on Feedback)**:
+    - Modified README and GitHub Pages tables to group download links by OS (macOS, Windows, Linux) instead of individual platform/architecture columns.
+    - Updated `src/update-readme-from-history.ts` and `docs/script.js` to generate the new grouped table structure.
+    - Adjusted `docs/style.css` for better readability of grouped links.
 - **Committed Changes**: Committed all updates to Git.
 
 ## 3. Next Steps
@@ -35,4 +37,4 @@
 - Confirmed the primary update mechanism now correctly relies on `update-cursor-links.ts` followed by `update-readme-from-history.ts` executed via the GitHub Action.
 - Confirmed the GitHub Pages site will be deployed automatically from the `docs/` directory via a separate GitHub Action.
 - Other scripts in `src/` are likely for manual data maintenance/correction.
-- Decided to limit `README.md` history display and create a separate static page for full history search, both featuring a prominent latest version download section.
+- Decided to limit `README.md` history display and create a separate static page for full history search, both featuring a prominent latest version download section and optimized table layout.
