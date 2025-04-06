@@ -2,7 +2,7 @@
 
 Tired of Cursor updating automatically? Need a specific older version? This repository tracks **official download links** for various versions of the [Cursor AI](https://cursor.sh/) code editor, making it easy to find exactly the version you need, even if it's not on the main website.
 
-[![Update Cursor Links Workflow](https://github.com/shtse8/cursor-ai-downloads-1/actions/workflows/update-cursor-links.yml/badge.svg)](https://github.com/shtse8/cursor-ai-downloads-1/actions/workflows/update-cursor-links.yml)
+[![Update Cursor Links Workflow](https://github.com/shtse8/cursor-ai-downloads/actions/workflows/update-cursor-links.yml/badge.svg)](https://github.com/shtse8/cursor-ai-downloads/actions/workflows/update-cursor-links.yml)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/shtse8)
 
 ---
