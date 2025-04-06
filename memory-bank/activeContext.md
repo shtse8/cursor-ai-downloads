@@ -1,4 +1,4 @@
-<!-- Version: 1.11 | Last Updated: 2025-06-06 -->
+<!-- Version: 1.12 | Last Updated: 2025-06-06 -->
 
 # Active Context
 
@@ -23,8 +23,8 @@
     - Restored README and GitHub Pages tables to the original multi-column layout.
     - Reverted changes in related scripts and CSS.
 - **Fixed README Formatting**: Removed a duplicate table header.
-- **Fixed Pages Layout (Based on Feedback)**:
-    - Modified GitHub Pages 'Latest Version' section (`docs/script.js`, `docs/style.css`) to display links vertically for better responsiveness.
+- **Fixed Pages Layout (Iteration 2, Based on Feedback)**:
+    - Modified GitHub Pages 'Latest Version' section (`docs/script.js`, `docs/style.css`) again to use proper HTML lists (`ul`/`li`) for vertical link display, resolving layout issues.
 - **Committed Changes**: Committed all updates, reverts, and fixes to Git.
 
 ## 3. Next Steps
@@ -39,4 +39,4 @@
 - Confirmed the primary update mechanism now correctly relies on `update-cursor-links.ts` followed by `update-readme-from-history.ts` executed via the GitHub Action.
 - Confirmed the GitHub Pages site will be deployed automatically from the `docs/` directory via a separate GitHub Action.
 - Other scripts in `src/` are likely for manual data maintenance/correction.
-- Decided to limit `README.md` history display and create a separate static page for full history search, both featuring a prominent latest version download section (vertically listed links on Pages) and using the original multi-column table layout.
+- Decided to limit `README.md` history display and create a separate static page for full history search, both featuring a prominent latest version download section (using list layout on Pages) and using the original multi-column table layout.

@@ -1,19 +1,19 @@
-<!-- Version: 1.11 | Last Updated: 2025-06-06 -->
+<!-- Version: 1.12 | Last Updated: 2025-06-06 -->
 
 # Project Progress & Status
 
 ## 1. Current Status
 
-- **Overall**: Project is established and functional. Core update mechanism and GitHub Pages deployment are automated. Layout reverted to original multi-column table. README formatting fixed. GitHub Pages layout for latest version fixed. Memory Bank is up-to-date.
+- **Overall**: Project is established and functional. Core update mechanism and GitHub Pages deployment are automated. Layout reverted to original multi-column table. README formatting fixed. GitHub Pages layout for latest version fixed using list structure. Memory Bank is up-to-date.
 - **Data**: `version-history.json` contains data up to version 0.48.7. Potential data quality issues remain unaddressed.
 - **Presentation**: 
     - `README.md` displays a prominent latest version section and the latest 10 versions in the original multi-column table format.
-    - GitHub Pages site in `docs/` mirrors the README structure with a vertically-arranged latest version section and a searchable full version history table in the original multi-column format.
+    - GitHub Pages site in `docs/` mirrors the README structure with a correctly formatted list-based latest version section and a searchable full version history table in the original multi-column format.
 - **Automation**: 
     - `update-cursor-links.yml` workflow runs hourly, updating data and README.
     - `deploy-gh-pages.yml` workflow runs on pushes to `main`, deploying the site from `docs/`.
-- **Scripts**: Core update scripts and site script (`docs/script.js`) are updated to reflect the reverted table structure and fixed Pages layout.
-- **Memory Bank**: Updated to reflect Pages layout fix.
+- **Scripts**: Core update scripts and site script (`docs/script.js`) are updated to reflect the reverted table structure and fixed Pages list layout.
+- **Memory Bank**: Updated to reflect final Pages layout fix.
 
 ## 2. What Works
 
@@ -21,7 +21,7 @@
 - Automated hourly checks for new versions and updates to `version-history.json`.
 - Automated regeneration of the `README.md` (latest version section + original multi-column table).
 - Automated deployment of the GitHub Pages site.
-- GitHub Pages site displaying latest version (responsive layout) and searchable full history with original multi-column table.
+- GitHub Pages site displaying latest version (responsive list layout) and searchable full history with original multi-column table.
 - Correctly formatted README.md.
 - Memory Bank system is active and updated.
 - Git history reflects recent changes, reverts, and fixes.
