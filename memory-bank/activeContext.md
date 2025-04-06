@@ -1,32 +1,32 @@
-<!-- Version: 1.1 | Last Updated: 2025-06-04 -->
+<!-- Version: 1.2 | Last Updated: 2025-06-04 -->
 
 # Active Context
 
 ## 1. Current Focus
 
-- Understanding the project structure, data flow, and automation mechanisms after initializing the Memory Bank.
+- Updating Memory Bank to reflect recent `README.md` changes and define next steps.
 
 ## 2. Recent Changes
 
 - Initialized the Memory Bank system.
-- Reviewed `README.md`: Confirmed project goal is tracking Cursor versions and download links.
-- Reviewed `version-history.json`: Understood the data structure (array of versions with dates and platform links).
-- Reviewed `src/update-cursor-links.ts`: Identified as the core script for fetching the latest version, updating `version-history.json`, and adding the new version row to `README.md`.
-- Reviewed `src/update-readme-from-history.ts`: Identified as a helper script to fix missing `linux-arm64` links in `README.md` based on `version-history.json`.
-- Reviewed `src/backfill-linux-arm64.ts`: Identified as a script to backfill missing `linux-arm64` links in `version-history.json` using API calls or pattern matching.
-- Reviewed `src/backfill-missing-linux-links.ts`: Identified as a script to backfill completely missing Linux links in `version-history.json` based on build IDs from other platforms (primarily for older S3 links).
-- Reviewed `src/update-readme-with-linux-links.ts`: Identified as a script to update `README.md` rows marked 'Not Ready' with Linux links found in `version-history.json`.
-- Reviewed `.github/workflows/update-cursor-links.yml`: Confirmed it runs `src/update-cursor-links.ts` hourly and commits changes if a new version is found.
-- Verified data consistency: `README.md` and `version-history.json` both show 0.48.7 (2025-04-02) as the latest version.
+- Reviewed project structure, scripts (`src/*.ts`), data (`version-history.json`), and automation (`.github/workflows/update-cursor-links.yml`).
+- **Rewrote `README.md`**:
+    - Updated Buy Me a Coffee link to `https://buymeacoffee.com/shtse8`.
+    - Limited the download table to display only the **last 10 versions**.
+    - Added visual enhancements (emojis, badges, separators).
+    - Corrected the GitHub Actions workflow badge URL to point to `shtse8/cursor-ai-downloads`.
+    - Adjusted badge styles for consistency.
 
 ## 3. Next Steps
 
-1.  Review `package.json` to understand specific dependencies.
-2.  Review `.devcontainer/devcontainer.json` for development environment details.
-3.  Consider if any immediate improvements or cleanups are needed (e.g., handling duplicate entries in `version-history.json` noted during review).
-4.  Commit the initialized Memory Bank files to Git.
+1.  **Update Scripts**: Modify `src/` scripts (especially `update-cursor-links.ts` and any others touching `README.md`) to correctly handle the new `README.md` format (e.g., only updating the table section for the last 10 versions).
+2.  **Plan GitHub Pages Site**: Outline the features and structure for a static site allowing users to search all versions from `version-history.json` and download the latest version easily.
+3.  **Implement GitHub Pages Site**: Create the HTML, CSS, and JavaScript for the static site and set up the deployment workflow.
+4.  **Review Dependencies**: Examine `package.json` and `.devcontainer/devcontainer.json`.
+5.  **Commit Changes**: Commit the updated `README.md` and Memory Bank files to Git.
 
 ## 4. Active Decisions
 
 - Confirmed the primary update mechanism relies on `src/update-cursor-links.ts` and the GitHub Action.
 - Other scripts in `src/` are likely for manual data maintenance/correction.
+- Decided to limit `README.md` history display and create a separate static page for full history search.
