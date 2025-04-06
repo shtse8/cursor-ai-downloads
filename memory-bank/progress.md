@@ -1,27 +1,28 @@
-<!-- Version: 1.5 | Last Updated: 2025-06-06 -->
+<!-- Version: 1.6 | Last Updated: 2025-06-06 -->
 
 # Project Progress & Status
 
 ## 1. Current Status
 
-- **Overall**: Project is established and functional. Core update mechanism and GitHub Pages deployment are automated via GitHub Actions. Memory Bank is up-to-date.
+- **Overall**: Project is established and functional. Core update mechanism and GitHub Pages deployment are automated. Layout and content improved based on feedback. Memory Bank is up-to-date.
 - **Data**: `version-history.json` contains data up to version 0.48.7. Potential data quality issues remain unaddressed.
 - **Presentation**: 
-    - `README.md` displays the latest 10 versions, updated correctly by the workflow.
-    - A basic GitHub Pages site exists in `docs/` providing a searchable full version history.
+    - `README.md` displays a prominent latest version section and the latest 10 versions in a table with improved headers.
+    - GitHub Pages site in `docs/` mirrors the README structure with a latest version section and a searchable full version history table.
 - **Automation**: 
-    - `update-cursor-links.yml` workflow runs hourly, updating data and README.
+    - `update-cursor-links.yml` workflow runs hourly, updating data and README (including latest version section).
     - `deploy-gh-pages.yml` workflow runs on pushes to `main`, deploying the site from `docs/`.
-- **Scripts**: Core update scripts are functioning. Site script (`docs/script.js`) fetches and displays data. Other maintenance scripts exist.
-- **Memory Bank**: Updated to reflect the creation of the GitHub Pages site and deployment workflow.
+- **Scripts**: Core update scripts and site script (`docs/script.js`) are updated to reflect presentation changes.
+- **Memory Bank**: Updated to reflect layout improvements.
 
 ## 2. What Works
 
 - Centralized tracking of Cursor download links in `version-history.json`.
 - Automated hourly checks for new versions and updates to `version-history.json`.
-- Automated regeneration of the `README.md` table with the latest 10 versions.
-- Automated deployment of the GitHub Pages site from the `docs/` directory.
-- Basic GitHub Pages site displaying searchable full version history.
+- Automated regeneration of the `README.md` (latest version section + table).
+- Automated deployment of the GitHub Pages site.
+- GitHub Pages site displaying latest version and searchable full history.
+- Improved presentation on both README and GitHub Pages.
 - Memory Bank system is active and updated.
 - Git history reflects recent changes.
 

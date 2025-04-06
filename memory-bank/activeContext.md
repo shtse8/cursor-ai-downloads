@@ -1,4 +1,4 @@
-<!-- Version: 1.5 | Last Updated: 2025-06-06 -->
+<!-- Version: 1.6 | Last Updated: 2025-06-06 -->
 
 # Active Context
 
@@ -12,11 +12,16 @@
 - Reviewed project structure, scripts, data, and automation.
 - **Rewrote `README.md`**: Updated links, limited table to 10 versions, added enhancements and markers.
 - **Refactored `src/update-readme-from-history.ts`**: Modified script to regenerate README table correctly.
-- **Fixed Core Update Logic**: Modified `src/update-cursor-links.ts` and updated `.github/workflows/update-cursor-links.yml` to ensure correct data flow and README updates.
-- **Planned GitHub Pages Site**: Outlined features, structure, and tech stack in `docs/gh-pages-plan.md`.
+- **Fixed Core Update Logic**: Modified `src/update-cursor-links.ts` and updated `.github/workflows/update-cursor-links.yml`.
+- **Planned GitHub Pages Site**: Outlined features in `docs/gh-pages-plan.md`.
 - **Implemented GitHub Pages Site**: Created initial HTML, CSS, and JS files in `docs/`.
-- **Set up Deployment Workflow**: Created `.github/workflows/deploy-gh-pages.yml` to automatically deploy the `docs/` directory to GitHub Pages.
-- **Committed Changes**: Committed all script, README, workflow, site files, and plan updates to Git.
+- **Set up Deployment Workflow**: Created `.github/workflows/deploy-gh-pages.yml`.
+- **Improved Layout & Content (Based on Feedback)**:
+    - Updated README intro and added a dedicated 'Quick Download: Latest Version' section.
+    - Shortened table headers in README for better readability.
+    - Updated `src/update-readme-from-history.ts` to populate the new latest version section in README.
+    - Updated GitHub Pages (`docs/index.html`, `docs/script.js`) to include a similar latest version section, adjusted intro text, and ensured Buy Me a Coffee link is present.
+- **Committed Changes**: Committed all updates to Git.
 
 ## 3. Next Steps
 
@@ -30,4 +35,4 @@
 - Confirmed the primary update mechanism now correctly relies on `update-cursor-links.ts` followed by `update-readme-from-history.ts` executed via the GitHub Action.
 - Confirmed the GitHub Pages site will be deployed automatically from the `docs/` directory via a separate GitHub Action.
 - Other scripts in `src/` are likely for manual data maintenance/correction.
-- Decided to limit `README.md` history display and create a separate static page for full history search.
+- Decided to limit `README.md` history display and create a separate static page for full history search, both featuring a prominent latest version download section.
