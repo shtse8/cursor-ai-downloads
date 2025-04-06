@@ -187,6 +187,33 @@ List some key features and the versions they were introduced in for reference wh
 | 0.37.1 | 2024-07-14 | [darwin-universal](https://downloader.cursor.sh/builds/240714yrr3gmv3k/mac/installer/universal) <br>[darwin-x64](https://downloader.cursor.sh/builds/240714yrr3gmv3k/mac/installer/x64)<br>[darwin-arm64](https://downloader.cursor.sh/builds/240714yrr3gmv3k/mac/installer/arm64) | [win32-x64](https://downloader.cursor.sh/builds/240714yrr3gmv3k/windows/nsis/x64) <br>[win32-arm64](https://downloader.cursor.sh/builds/240714yrr3gmv3k/windows/nsis/arm64) | [linux-x64](https://downloader.cursor.sh/builds/240714yrr3gmv3k/linux/appImage/x64)<br>[linux-arm64](https://downloader.cursor.sh/builds/240714yrr3gmv3k/linux/appImage/arm64) |
 | 0.36.2 | 2024-07-07 | [darwin-universal](https://downloader.cursor.sh/builds/2407077n6pzboby/mac/installer/universal) <br>[darwin-x64](https://downloader.cursor.sh/builds/2407077n6pzboby/mac/installer/x64)<br>[darwin-arm64](https://downloader.cursor.sh/builds/2407077n6pzboby/mac/installer/arm64) | [win32-x64](https://downloader.cursor.sh/builds/2407077n6pzboby/windows/nsis/x64) <br>[win32-arm64](https://downloader.cursor.sh/builds/2407077n6pzboby/windows/nsis/arm64) | [linux-x64](https://downloader.cursor.sh/builds/2407077n6pzboby/linux/appImage/x64)<br>[linux-arm64](https://downloader.cursor.sh/builds/2407077n6pzboby/linux/appImage/arm64) |
 
+
+## 🛠️ Development & Maintenance
+
+This repository uses automated workflows to check for new Cursor versions hourly. However, some maintenance tasks might require manual intervention using the provided scripts.
+
+### Prerequisites
+
+Ensure you have [Bun](https://bun.sh/) installed. Then, install dependencies:
+
+```bash
+bun install
+```
+
+### Running Scripts
+
+All scripts are located in the `src/` directory and should be run from the project root using Bun.
+
+-   **`bun src/update-cursor-links.ts`**: (Run by GitHub Actions) Checks for the latest version, updates `version-history.json`, and adds the new version to `README.md`. Can be run manually to force an update check.
+-   **`bun src/cleanup-version-history.ts`**: Cleans up duplicate version entries in `version-history.json`. Run this if duplicates are suspected.
+-   **`bun src/backfill-linux-arm64.ts`**: Attempts to find and add missing `linux-arm64` download links to existing entries in `version-history.json`. Useful after adding older versions that might lack this specific link.
+-   **`bun src/backfill-missing-linux-links.ts`**: Attempts to generate *both* `linux-x64` and `linux-arm64` links for entries missing them, based on patterns found in Mac/Windows links (primarily for older S3-hosted versions).
+-   **`bun src/update-readme-from-history.ts`**: Updates the `README.md` table by adding missing `linux-arm64` links found in `version-history.json`.
+-   **`bun src/update-readme-with-linux-links.ts`**: Updates the `README.md` table, replacing "Not Ready" placeholders in the Linux column with actual links found in `version-history.json`.
+
+**Note:** Always review changes made by manual scripts before committing. Backups of `version-history.json` and `README.md` are created by most scripts with suffixes like `.backup`, `.cleanup-backup`, etc.
+
+---
 ---
 
 ## 📜 License
