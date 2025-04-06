@@ -1,0 +1,70 @@
+/* Custom Styles for Cursor Version History Page */
+
+body {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+header h1 {
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+    color: var(--muted-color);
+}
+
+#version-table th,
+#version-table td {
+    white-space: nowrap; /* Prevent links from wrapping */
+    padding: 0.5rem 0.75rem; /* Adjust padding for better spacing */
+    font-size: 0.85rem; /* Slightly smaller font for table */
+    text-align: center;
+}
+
+#version-table th:first-child,
+#version-table td:first-child,
+#version-table th:nth-child(2),
+#version-table td:nth-child(2) {
+    text-align: left; /* Align version and date left */
+}
+
+#version-table a {
+    display: inline-block; /* Ensure links behave predictably */
+}
+
+/* Add some spacing below the search input */
+#search-input {
+    margin-bottom: 1.5rem;
+}
+
+/* Style for the loading indicator */
+#loading-indicator {
+    text-align: center;
+    padding: 2rem;
+    font-style: italic;
+    color: var(--muted-color);
+}
+
+/* Style for no results message */
+#no-results {
+    text-align: center;
+    padding: 2rem;
+    font-style: italic;
+    color: var(--muted-color);
+}
+
+/* Ensure the table wrapper allows scrolling */
+.overflow-auto {
+    overflow-x: auto;
+}
+
+footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--muted-border-color);
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--muted-color);
+}

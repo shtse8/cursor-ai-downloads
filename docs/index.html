@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursor AI Version History</title>
+    <meta name="description" content="A searchable history of official Cursor AI download links.">
+    <!-- Link to Pico.css for simple styling -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <!-- Link to custom styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <header>
+            <h1>Cursor AI Version History 💾</h1>
+            <p>A searchable history of official download links for the <a href="https://cursor.sh/" target="_blank" rel="noopener noreferrer">Cursor AI</a> code editor.</p>
+            <p>Maintained by the <a href="https://github.com/shtse8/cursor-ai-downloads" target="_blank" rel="noopener noreferrer">shtse8/cursor-ai-downloads</a> repository.</p>
+        </header>
+
+        <section>
+            <h2>Search Versions</h2>
+            <input type="search" id="search-input" name="search" placeholder="Search by version (e.g., 0.48.7)...">
+        </section>
+
+        <section id="version-table-section">
+            <h2>Download Links</h2>
+            <div id="loading-indicator" aria-busy="true">Loading version history...</div>
+            <div class="overflow-auto"> <!-- Wrapper for horizontal scrolling on small screens -->
+                <table id="version-table" role="grid" style="display: none;"> <!-- Initially hidden -->
+                    <thead>
+                        <tr>
+                            <th>Version</th>
+                            <th>Date</th>
+                            <th>🍎 macOS (Universal)</th>
+                            <th>🍎 macOS (Intel)</th>
+                            <th>🍎 macOS (Apple Silicon)</th>
+                            <th>🪟 Windows (x64)</th>
+                            <th>🪟 Windows (ARM64)</th>
+                            <th>🐧 Linux (x64)</th>
+                            <th>🐧 Linux (ARM64)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="version-table-body">
+                        <!-- Table rows will be inserted here by script.js -->
+                    </tbody>
+                </table>
+            </div>
+            <p id="no-results" style="display: none;">No versions found matching your search.</p>
+        </section>
+
+        <footer>
+            <small>
+                Data sourced from official Cursor channels. This project is not affiliated with Cursor AI. |
+                <a href="https://github.com/shtse8/cursor-ai-downloads/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT License</a> |
+                Support this project: <a href="https://buymeacoffee.com/shtse8" target="_blank" rel="noopener noreferrer">Buy Me a Coffee</a>
+            </small>
+        </footer>
+    </main>
+
+    <!-- Link to JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>
