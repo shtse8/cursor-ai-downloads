@@ -28,13 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
      * @returns {string} HTML string for the link or 'N/A'.
      */
      function createLatestLink(url, label) {
-        // Revert to using text label for consistency, can be adjusted if needed
         return url ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>` : `${label}: N/A`;
     }
 
 
     /**
-     * Renders the latest version details with individual links.
+     * Renders the latest version details with individual links arranged vertically per OS.
      * @param {object|undefined} latestVersion - The latest version entry object.
      */
     function renderLatestVersion(latestVersion) {
@@ -48,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const { version, date, platforms } = latestVersion;
         const displayDate = date || 'N/A';
 
-        // Revert to creating individual links
+        // Create individual links
         const macUniLink = createLatestLink(platforms['darwin-universal'], 'macOS Universal');
         const macX64Link = createLatestLink(platforms['darwin-x64'], 'macOS Intel');
         const macArm64Link = createLatestLink(platforms['darwin-arm64'], 'macOS Apple Silicon');
@@ -57,18 +56,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const linuxX64Link = createLatestLink(platforms['linux-x64'], 'Linux x64');
         const linuxArm64Link = createLatestLink(platforms['linux-arm64'], 'Linux ARM64');
 
-        // Filter out N/A links for cleaner display
+        // Filter out N/A links
         const macLinksArr = [macUniLink, macX64Link, macArm64Link].filter(link => !link.includes(': N/A'));
         const winLinksArr = [winX64Link, winArm64Link].filter(link => !link.includes(': N/A'));
         const linuxLinksArr = [linuxX64Link, linuxArm64Link].filter(link => !link.includes(': N/A'));
 
-        // Revert to original display format or similar
-        let details = `<p><strong>Version: ${version}</strong> (${displayDate})</p><ul>`;
-        if (macLinksArr.length > 0) details += `<li><strong>macOS:</strong> ${macLinksArr.join(' | ')}</li>`;
-        if (winLinksArr.length > 0) details += `<li><strong>Windows:</strong> ${winLinksArr.join(' | ')}</li>`;
-        if (linuxLinksArr.length > 0) details += `<li><strong>Linux:</strong> ${linuxLinksArr.join(' | ')}</li>`;
-        details += `</ul>`;
-
+        // Build details string using <br> for vertical layout within OS groups
+        let details = `<p><strong>Version: ${version}</strong> (${displayDate})</p>`;
+        if (macLinksArr.length > 0) {
+            details += `<div><strong>macOS:</strong><br>${macLinksArr.join('<br>')}</div>`;
+        }
+        if (winLinksArr.length > 0) {
+            details += `<div><strong>Windows:</strong><br>${winLinksArr.join('<br>')}</div>`;
+        }
+        if (linuxLinksArr.length > 0) {
+            details += `<div><strong>Linux:</strong><br>${linuxLinksArr.join('<br>')}</div>`;
+        }
 
         latestVersionDetailsDiv.innerHTML = details;
     }

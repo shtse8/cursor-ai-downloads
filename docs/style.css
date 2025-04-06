@@ -19,21 +19,25 @@ header p {
 #latest-version-section h2 {
     margin-bottom: 0.5rem;
 }
-#latest-version-details ul {
-    list-style: none;
-    padding: 0;
-    margin: 0.5rem 0 0 0;
+#latest-version-details p { /* Style the version/date line */
+    margin-bottom: 0.75rem;
 }
-#latest-version-details li {
+#latest-version-details div { /* Style each OS group */
     margin-bottom: 0.5rem;
 }
-#latest-version-details li strong {
-    display: inline-block;
-    width: 70px; /* Adjust as needed */
-    margin-right: 0.5rem;
+#latest-version-details strong { /* Style the OS label */
+     display: inline-block;
+     /* width: 70px; */ /* Remove fixed width */
+     margin-right: 0.5rem;
 }
 #latest-version-details a {
-    margin-right: 0.5rem;
+    display: block; /* Make links stack vertically */
+    margin-left: 1rem; /* Indent links under OS label */
+    margin-bottom: 0.25rem;
+    line-height: 1.4;
+}
+#latest-version-details a:last-child {
+    margin-bottom: 0;
 }
 
 
