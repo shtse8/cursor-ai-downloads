@@ -1,16 +1,21 @@
-# Cursor AI Version Tracker
+# Cursor AI Version Tracker 💾
 
-This repository tracks official download links for various versions of the [Cursor AI](https://cursor.sh/) code editor. It helps users find specific older or newer versions that might not be readily available on the official website.
+Tired of Cursor updating automatically? Need a specific older version? This repository tracks **official download links** for various versions of the [Cursor AI](https://cursor.sh/) code editor, making it easy to find exactly the version you need, even if it's not on the main website.
 
+[![Update Cursor Links Workflow](https://github.com/shtse8/cursor-ai-downloads-1/actions/workflows/update-cursor-links.yml/badge.svg)](https://github.com/shtse8/cursor-ai-downloads-1/actions/workflows/update-cursor-links.yml)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/shtse8)
 
-## Latest Version
+---
+
+## Latest Version 🚀
 
 The latest detected version is **0.48.7** (released on 2025-04-02).
 
+---
+
 ## Recent Download Links (Last 10 Versions)
 
-| Version | Date | macOS (Universal) | macOS (Intel) | macOS (Apple Silicon) | Windows (x64) | Windows (ARM64) | Linux (x64) | Linux (ARM64) |
+| Version | Date | 🍎 macOS (Universal) | 🍎 macOS (Intel) | 🍎 macOS (Apple Silicon) | 🪟 Windows (x64) | 🪟 Windows (ARM64) | 🐧 Linux (x64) | 🐧 Linux (ARM64) |
 |---|---|---|---|---|---|---|---|---|
 | 0.48.7 | 2025-04-02 | [Download](https://downloads.cursor.com/production/66290080aae40d23364ba2371832bda0933a3641/darwin/universal/Cursor-darwin-universal.dmg) | [Download](https://downloads.cursor.com/production/66290080aae40d23364ba2371832bda0933a3641/darwin/x64/Cursor-darwin-x64.dmg) | [Download](https://downloads.cursor.com/production/66290080aae40d23364ba2371832bda0933a3641/darwin/arm64/Cursor-darwin-arm64.dmg) | [Download](https://downloads.cursor.com/production/66290080aae40d23364ba2371832bda0933a3641/win32/x64/user-setup/CursorUserSetup-x64-0.48.7.exe) | [Download](https://downloads.cursor.com/production/66290080aae40d23364ba2371832bda0933a3641/win32/arm64/user-setup/CursorUserSetup-arm64-0.48.7.exe) | [Download](https://downloads.cursor.com/production/66290080aae40d23364ba2371832bda0933a3641/linux/x64/Cursor-0.48.7-x86_64.AppImage) | [Download](https://downloads.cursor.com/production/66290080aae40d23364ba2371832bda0933a3641/linux/arm64/Cursor-0.48.7-aarch64.AppImage) |
 | 0.48.6 | 2025-03-31 | [Download](https://downloads.cursor.com/production/7da827d66e9b56a846349698c70129a436421245/darwin/universal/Cursor-darwin-universal.dmg) | [Download](https://downloads.cursor.com/production/7da827d66e9b56a846349698c70129a436421245/darwin/x64/Cursor-darwin-x64.dmg) | [Download](https://downloads.cursor.com/production/7da827d66e9b56a846349698c70129a436421245/darwin/arm64/Cursor-darwin-arm64.dmg) | [Download](https://downloads.cursor.com/production/7da827d66e9b56a846349698c70129a436421245/win32/x64/user-setup/CursorUserSetup-x64-0.48.6.exe) | [Download](https://downloads.cursor.com/production/7da827d66e9b56a846349698c70129a436421245/win32/arm64/user-setup/CursorUserSetup-arm64-0.48.6.exe) | [Download](https://downloads.cursor.com/production/7da827d66e9b56a846349698c70129a436421245/linux/x64/Cursor-0.48.6-x86_64.AppImage) | [Download](https://downloads.cursor.com/production/7da827d66e9b56a846349698c70129a436421245/linux/arm64/Cursor-0.48.6-aarch64.AppImage) |
@@ -25,14 +30,20 @@ The latest detected version is **0.48.7** (released on 2025-04-02).
 
 *Note: Links point directly to the official Cursor download servers.*
 
-## Automation
+---
 
-This repository uses GitHub Actions to automatically check for new Cursor versions hourly. When a new version is detected, the `version-history.json` file and this README are updated automatically.
+## Automation ⚙️
 
-## Contributing
+This repository uses GitHub Actions to automatically check for new Cursor versions **hourly**. When a new version is detected, the `version-history.json` file and this README are updated automatically. You can see the status of the update workflow via the badge at the top.
+
+---
+
+## Contributing 🤝
 
 While the primary update mechanism is automated, contributions for fixing historical data or improving scripts are welcome. Please refer to the project's contribution guidelines (if available) or open an issue.
 
-## License
+---
 
-This project is licensed under the [MIT License](LICENSE). Download links provided point to official Cursor software, which is subject to its own licensing terms.
+## License 📜
+
+This project (the tracking scripts and data organization) is licensed under the [MIT License](LICENSE). Download links provided point to official Cursor software, which is subject to its own licensing terms.
