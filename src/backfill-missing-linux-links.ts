@@ -1,60 +1,12 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import { fileURLToPath } from 'url';
+import {
+  VersionHistoryEntry,
+  VersionHistory,
+  readVersionHistory,
+  saveVersionHistory
+} from './utils.js'; // Import from utils
+// Types are imported from utils
 
-// Get dirname in ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Interface for version history JSON
-interface VersionHistoryEntry {
-  version: string;
-  date: string;
-  platforms: {
-    [platform: string]: string; // platform -> download URL
-  };
-}
-
-interface VersionHistory {
-  versions: VersionHistoryEntry[];
-}
-
-/**
- * Read version history from JSON file
- */
-function readVersionHistory(): VersionHistory {
-  const historyPath = path.join(process.cwd(), 'version-history.json');
-  if (fs.existsSync(historyPath)) {
-    try {
-      const jsonData = fs.readFileSync(historyPath, 'utf8');
-      return JSON.parse(jsonData) as VersionHistory;
-    } catch (error) {
-      console.error('Error reading version history:', error instanceof Error ? error.message : 'Unknown error');
-      return { versions: [] };
-    }
-  } else {
-    console.log('version-history.json not found, creating a new file');
-    return { versions: [] };
-  }
-}
-
-/**
- * Save version history to JSON file
- */
-function saveVersionHistory(history: VersionHistory): void {
-  const historyPath = path.join(process.cwd(), 'version-history.json');
-  
-  // Create a backup before saving
-  if (fs.existsSync(historyPath)) {
-    fs.copyFileSync(historyPath, `${historyPath}.backup`);
-    console.log(`Created backup at ${historyPath}.backup`);
-  }
-  
-  // Pretty print JSON with 2 spaces
-  const jsonData = JSON.stringify(history, null, 2);
-  fs.writeFileSync(historyPath, jsonData, 'utf8');
-  console.log('Version history saved to version-history.json');
-}
+// readVersionHistory and saveVersionHistory are imported from utils
 
 /**
  * Generate Linux links based on version patterns
@@ -121,8 +73,8 @@ async function backfillMissingLinuxLinks(): Promise<void> {
   
   // Process versions missing Linux links
   let versionsToProcess = history.versions
-    .filter(entry => 
-      (!entry.platforms['linux-x64'] || !entry.platforms['linux-arm64']) && 
+    .filter((entry: VersionHistoryEntry) => // Add type
+      (!entry.platforms['linux-x64'] || !entry.platforms['linux-arm64']) &&
       (entry.platforms['darwin-universal'] || entry.platforms['win32-x64'])
     );
   
@@ -137,7 +89,7 @@ async function backfillMissingLinuxLinks(): Promise<void> {
   let skippedCount = 0;
   
   // Process each version
-  for (const entry of versionsToProcess) {
+  for (const entry of versionsToProcess as VersionHistoryEntry[]) { // Add type assertion
     const version = entry.version;
     console.log(`Processing version ${version}...`);
     
@@ -172,7 +124,8 @@ async function backfillMissingLinuxLinks(): Promise<void> {
   // Save the updated history
   if (updatedCount > 0) {
     console.log('Saving updated history with new Linux links...');
-    saveVersionHistory(history);
+    // Use util function with specific backup suffix
+    saveVersionHistory(history, '.backfill-missing-linux-backup');
     console.log('Backfill process completed and saved');
   } else {
     console.log('No updates made, skipping save');
@@ -180,7 +133,13 @@ async function backfillMissingLinuxLinks(): Promise<void> {
 }
 
 // Run the backfill process
-backfillMissingLinuxLinks().catch(error => {
-  console.error('Error in backfill process:', error instanceof Error ? error.message : 'Unknown error');
-  process.exit(1);
-}); 
+// Keep execution logic if this script is run directly
+if (require.main === module) {
+    backfillMissingLinuxLinks().catch(error => {
+      console.error('Error in backfill process:', error instanceof Error ? error.message : 'Unknown error');
+      process.exit(1);
+    });
+}
+
+// Export for potential testing or reuse
+export { backfillMissingLinuxLinks, generateLinuxLinks };

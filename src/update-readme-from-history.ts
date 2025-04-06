@@ -1,42 +1,11 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import { fileURLToPath } from 'url';
-
-// Get dirname in ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Interface for version history JSON
-interface VersionHistoryEntry {
-  version: string;
-  date: string;
-  platforms: {
-    [platform: string]: string; // platform -> download URL
-  };
-}
-
-interface VersionHistory {
-  versions: VersionHistoryEntry[];
-}
-
-/**
- * Read version history from JSON file
- */
-function readVersionHistory(): VersionHistory {
-  const historyPath = path.join(process.cwd(), 'version-history.json');
-  if (fs.existsSync(historyPath)) {
-    try {
-      const jsonData = fs.readFileSync(historyPath, 'utf8');
-      return JSON.parse(jsonData) as VersionHistory;
-    } catch (error) {
-      console.error('Error reading version history:', error instanceof Error ? error.message : 'Unknown error');
-      return { versions: [] };
-    }
-  } else {
-    console.log('version-history.json not found');
-    return { versions: [] };
-  }
-}
+import {
+  VersionHistoryEntry,
+  VersionHistory,
+  readVersionHistory,
+  readFileContent,
+  writeFileContent
+} from './utils.js'; // Import from utils
+// Types and readVersionHistory are imported from utils
 
 /**
  * Update README.md file with linux-arm64 links from version history
@@ -52,23 +21,20 @@ function updateReadmeFromHistory(): void {
     return;
   }
   
-  // Read README.md
-  const readmePath = path.join(process.cwd(), 'README.md');
-  if (!fs.existsSync(readmePath)) {
-    console.error('README.md file not found');
-    return;
+  // Read README.md using utility function
+  const readmePath = 'README.md'; // Relative path for util function
+  let readmeContent = readFileContent(readmePath);
+  if (readmeContent === null) {
+    console.error('Failed to read README.md');
+    return; // Stop if README cannot be read
   }
   
-  let readmeContent = fs.readFileSync(readmePath, 'utf8');
-  
-  // Create a backup
-  fs.writeFileSync(`${readmePath}.backup`, readmeContent, 'utf8');
-  console.log(`Created backup at ${readmePath}.backup`);
+  // Backup is handled by writeFileContent
   
   let updatedCount = 0;
   
   // Process each version in history
-  for (const entry of history.versions) {
+  for (const entry of history.versions as VersionHistoryEntry[]) { // Add type assertion
     const version = entry.version;
     
     // Skip if no linux-arm64 URL
@@ -113,14 +79,25 @@ function updateReadmeFromHistory(): void {
   console.log(`README update summary: Updated ${updatedCount} versions`);
   
   // Save the updated README
+  // Save the updated README using utility function
   if (updatedCount > 0) {
-    fs.writeFileSync(readmePath, readmeContent, 'utf8');
-    console.log('README.md updated successfully');
+    const readmeSaved = writeFileContent(readmePath, readmeContent, '.linux-arm64-update-backup');
+    if (readmeSaved) {
+        console.log('README.md updated successfully with linux-arm64 links');
+    } else {
+        console.error('Failed to save updated README.md');
+    }
   } else {
     console.log('No updates made to README.md');
   }
 }
 
 // Run the update process
-updateReadmeFromHistory();
-console.log('Process completed'); 
+// Keep execution logic if this script is run directly
+if (require.main === module) {
+    updateReadmeFromHistory();
+    console.log('Process completed');
+}
+
+// Export for potential testing or reuse
+export { updateReadmeFromHistory };

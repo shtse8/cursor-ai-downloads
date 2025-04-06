@@ -1,23 +1,10 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import { fileURLToPath } from 'url';
-
-// Get dirname in ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Interface for version history JSON
-interface VersionHistoryEntry {
-  version: string;
-  date: string;
-  platforms: {
-    [platform: string]: string; // platform -> download URL
-  };
-}
-
-interface VersionHistory {
-  versions: VersionHistoryEntry[];
-}
+import {
+  VersionHistoryEntry,
+  VersionHistory,
+  readVersionHistory,
+  saveVersionHistory
+} from './utils.js'; // Import from utils
+// Types are imported from utils
 
 interface DownloadResponse {
   downloadUrl: string;
@@ -29,13 +16,19 @@ interface DownloadResponse {
 async function fetchVersionDownloadUrl(platform: string, version: string): Promise<string | null> {
   try {
     console.log(`Fetching ${platform} URL for version ${version}...`);
+    // Use AbortController for timeout with standard fetch
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 seconds timeout
+
     const response = await fetch(`https://www.cursor.com/api/download?platform=${platform}&releaseTrack=${version}`, {
       headers: {
         'User-Agent': 'Cursor-Version-Checker',
         'Cache-Control': 'no-cache',
       },
-      timeout: 10000,
+      signal: controller.signal // Pass the abort signal
     });
+
+    clearTimeout(timeoutId); // Clear the timeout if fetch completes
     
     if (!response.ok) {
       console.warn(`HTTP error fetching ${platform} for ${version}: ${response.status}`);
@@ -45,7 +38,7 @@ async function fetchVersionDownloadUrl(platform: string, version: string): Promi
     const data = await response.json() as DownloadResponse;
     return data.downloadUrl;
   } catch (error) {
-    console.error(`Error fetching ${platform} URL for version ${version}:`, error instanceof Error ? error.message : 'Unknown error');
+    console.error(`Error fetching ${platform} URL for version ${version}:`, error instanceof Error ? error.message : String(error));
     return null;
   }
 }
@@ -80,42 +73,7 @@ function generateArm64UrlFromX64(x64Url: string): string | null {
   return null;
 }
 
-/**
- * Read version history from JSON file
- */
-function readVersionHistory(): VersionHistory {
-  const historyPath = path.join(process.cwd(), 'version-history.json');
-  if (fs.existsSync(historyPath)) {
-    try {
-      const jsonData = fs.readFileSync(historyPath, 'utf8');
-      return JSON.parse(jsonData) as VersionHistory;
-    } catch (error) {
-      console.error('Error reading version history:', error instanceof Error ? error.message : 'Unknown error');
-      return { versions: [] };
-    }
-  } else {
-    console.log('version-history.json not found, creating a new file');
-    return { versions: [] };
-  }
-}
-
-/**
- * Save version history to JSON file
- */
-function saveVersionHistory(history: VersionHistory): void {
-  const historyPath = path.join(process.cwd(), 'version-history.json');
-  
-  // Create a backup before saving
-  if (fs.existsSync(historyPath)) {
-    fs.copyFileSync(historyPath, `${historyPath}.backup`);
-    console.log(`Created backup at ${historyPath}.backup`);
-  }
-  
-  // Pretty print JSON with 2 spaces
-  const jsonData = JSON.stringify(history, null, 2);
-  fs.writeFileSync(historyPath, jsonData, 'utf8');
-  console.log('Version history saved to version-history.json');
-}
+// readVersionHistory and saveVersionHistory are imported from utils
 
 /**
  * Main function to backfill linux-arm64 URLs
@@ -135,7 +93,7 @@ async function backfillLinuxARM64(): Promise<void> {
   
   // Process all versions that need updating (have linux-x64 but not linux-arm64)
   let versionsToProcess = history.versions
-    .filter(entry => !entry.platforms['linux-arm64'] && entry.platforms['linux-x64']);
+    .filter((entry: VersionHistoryEntry) => !entry.platforms['linux-arm64'] && entry.platforms['linux-x64']); // Add type
   
   console.log(`Will process ${versionsToProcess.length} versions in this run`);
   
@@ -145,7 +103,7 @@ async function backfillLinuxARM64(): Promise<void> {
   
   // Process each version
   for (let i = 0; i < history.versions.length; i++) {
-    const entry = history.versions[i];
+    const entry = history.versions[i] as VersionHistoryEntry; // Add type assertion
     const version = entry.version;
     
     // Skip if linux-arm64 already exists
@@ -163,7 +121,7 @@ async function backfillLinuxARM64(): Promise<void> {
     }
     
     // Skip if not in our list to process
-    if (!versionsToProcess.some(v => v.version === version)) {
+    if (!versionsToProcess.some((v: VersionHistoryEntry) => v.version === version)) { // Add type
       console.log(`Version ${version} not in process list, skipping`);
       continue;
     }
@@ -191,7 +149,8 @@ async function backfillLinuxARM64(): Promise<void> {
       // Save after each successful update to avoid losing progress
       if (updatedCount % 10 === 0) {
         console.log(`Saving intermediate progress after ${updatedCount} updates...`);
-        saveVersionHistory(history);
+        // Use util function with specific backup suffix
+        saveVersionHistory(history, '.backfill-arm64-backup');
       }
     } else {
       console.error(`Could not determine linux-arm64 URL for version ${version}`);
@@ -208,7 +167,8 @@ async function backfillLinuxARM64(): Promise<void> {
   if (updatedCount > 0) {
     console.log('Saving updated history with new linux-arm64 URLs...');
     console.log(`Example updated entry: ${JSON.stringify(history.versions[0], null, 2)}`);
-    saveVersionHistory(history);
+    // Use util function with specific backup suffix
+    saveVersionHistory(history, '.backfill-arm64-backup');
     console.log('Backfill process completed and saved');
   } else {
     console.log('No updates made, skipping save');
@@ -216,7 +176,13 @@ async function backfillLinuxARM64(): Promise<void> {
 }
 
 // Run the backfill process
-backfillLinuxARM64().catch(error => {
-  console.error('Error in backfill process:', error instanceof Error ? error.message : 'Unknown error');
-  process.exit(1);
-}); 
+// Keep execution logic if this script is run directly
+if (require.main === module) {
+    backfillLinuxARM64().catch(error => {
+      console.error('Error in backfill process:', error instanceof Error ? error.message : 'Unknown error');
+      process.exit(1);
+    });
+}
+
+// Export for potential testing or reuse
+export { backfillLinuxARM64, fetchVersionDownloadUrl, generateArm64UrlFromX64 };

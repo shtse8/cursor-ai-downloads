@@ -1,19 +1,16 @@
-import * as fs from 'fs';
 import * as path from 'path';
-import { fileURLToPath } from 'url';
+import {
+  VersionHistoryEntry,
+  VersionHistory,
+  readVersionHistory,
+  saveVersionHistory,
+  readFileContent,
+  writeFileContent,
+  formatDate,
+  extractVersion
+} from './utils.js'; // Add .js extension for ESM module resolution
 
-// Get dirname in ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Define types for Bun's fetch if needed
-declare global {
-  interface Response {
-    ok: boolean;
-    status: number;
-    json(): Promise<any>;
-  }
-}
+// Global Response type is available via "dom" lib in tsconfig
 
 interface PlatformInfo {
   platforms: string[];
@@ -40,18 +37,7 @@ interface DownloadResponse {
   downloadUrl: string;
 }
 
-// Interface for version history JSON
-interface VersionHistoryEntry {
-  version: string;
-  date: string;
-  platforms: {
-    [platform: string]: string; // platform -> download URL
-  };
-}
-
-interface VersionHistory {
-  versions: VersionHistoryEntry[];
-}
+// Types are now imported from ./utils
 
 const PLATFORMS: PlatformMap = {
   windows: {
@@ -71,250 +57,165 @@ const PLATFORMS: PlatformMap = {
   }
 };
 
-/**
- * Extract version from URL or filename
- */
-function extractVersion(url: string): string {
-  // For Windows
-  const winMatch = url.match(/CursorUserSetup-[^-]+-([0-9.]+)\.exe/);
-  if (winMatch && winMatch[1]) return winMatch[1];
-  
-  // For other URLs, try to find version pattern
-  const versionMatch = url.match(/[0-9]+\.[0-9]+\.[0-9]+/);
-  return versionMatch ? versionMatch[0] : 'Unknown';
-}
-
-/**
- * Format date as YYYY-MM-DD
- */
-function formatDate(date: Date): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
+// extractVersion and formatDate are now imported from ./utils
 
 /**
  * Fetch latest download URL for a platform
  */
 async function fetchLatestDownloadUrl(platform: string): Promise<string | null> {
   try {
-    // Simple fetch without complex retry logic
+    // Use AbortController for timeout with standard fetch
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 seconds timeout
+
     const response = await fetch(`https://www.cursor.com/api/download?platform=${platform}&releaseTrack=latest`, {
       headers: {
         'User-Agent': 'Cursor-Version-Checker',
         'Cache-Control': 'no-cache',
       },
-      // Keep a reasonable timeout
-      timeout: 10000,
+      signal: controller.signal // Pass the abort signal
     });
-    
+
+    clearTimeout(timeoutId); // Clear the timeout if fetch completes
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
+
     const data = await response.json() as DownloadResponse;
     return data.downloadUrl;
   } catch (error) {
-    console.error(`Error fetching download URL for platform ${platform}:`, error instanceof Error ? error.message : 'Unknown error');
+    console.error(`Error fetching download URL for platform ${platform}:`, error instanceof Error ? error.message : String(error));
     return null;
   }
 }
 
-/**
- * Read version history from JSON file
- */
-function readVersionHistory(): VersionHistory {
-  const historyPath = path.join(process.cwd(), 'version-history.json');
-  if (fs.existsSync(historyPath)) {
-    try {
-      const jsonData = fs.readFileSync(historyPath, 'utf8');
-      return JSON.parse(jsonData) as VersionHistory;
-    } catch (error) {
-      console.error('Error reading version history:', error instanceof Error ? error.message : 'Unknown error');
-      return { versions: [] };
-    }
-  } else {
-    console.log('version-history.json not found, creating a new file');
-    return { versions: [] };
-  }
-}
-
-/**
- * Save version history to JSON file
- */
-function saveVersionHistory(history: VersionHistory): void {
-  if (!history || !Array.isArray(history.versions)) {
-    console.error('Invalid version history object provided');
-    return;
-  }
-
-  const historyPath = path.join(process.cwd(), 'version-history.json');
-  
-  // Keep backup - useful even for GitHub Actions
-  if (fs.existsSync(historyPath)) {
-    try {
-      const backupPath = `${historyPath}.backup`;
-      fs.copyFileSync(historyPath, backupPath);
-      console.log(`Created backup at ${backupPath}`);
-    } catch (error) {
-      console.error('Failed to create backup of version history:', error instanceof Error ? error.message : 'Unknown error');
-      // Continue anyway, as creating backup is not critical
-    }
-  }
-  
-  try {
-    const jsonData = JSON.stringify(history, null, 2);
-
-    // Verify we have valid JSON before writing to file
-    try {
-      JSON.parse(jsonData);
-    } catch (parseError) {
-      console.error('Generated invalid JSON data, aborting save:', parseError instanceof Error ? parseError.message : 'Unknown error');
-      return;
-    }
-
-    // Write to a temporary file first, then rename to avoid partial writes
-    const tempPath = `${historyPath}.tmp`;
-    fs.writeFileSync(tempPath, jsonData, 'utf8');
-    fs.renameSync(tempPath, historyPath);
-
-    // Verify file exists after writing
-    if (fs.existsSync(historyPath)) {
-      console.log('Version history saved to version-history.json');
-    } else {
-      console.error('Failed to save version history: File does not exist after write');
-    }
-  } catch (error) {
-    console.error('Error saving version history:', error instanceof Error ? error.message : 'Unknown error');
-    throw error; // Rethrow to allow caller to handle
-  }
-}
+// readVersionHistory and saveVersionHistory are now imported from ./utils
 
 /**
  * Update the README.md file with latest Cursor links
  */
 async function updateReadme(): Promise<boolean> {
   console.log(`Starting update check at ${new Date().toISOString()}`);
-  
+
   // Collect all URLs and versions
   const results: ResultMap = {};
   let latestVersion = '0.0.0';
   const currentDate = formatDate(new Date());
-  
+
   // Fetch all platform download URLs
   for (const [osKey, osData] of Object.entries(PLATFORMS)) {
     results[osKey] = {};
-    
+
     for (let i = 0; i < osData.platforms.length; i++) {
       const platform = osData.platforms[i];
       const url = await fetchLatestDownloadUrl(platform);
-      
+
       if (url) {
         const version = extractVersion(url);
         results[osKey][platform] = { url, version };
-        
-        // Track the highest version number
-        if (version !== 'Unknown' && version > latestVersion) {
+
+        // Track the highest version number using localeCompare for proper sorting
+        if (version !== 'Unknown' && version.localeCompare(latestVersion, undefined, { numeric: true, sensitivity: 'base' }) > 0) {
           latestVersion = version;
         }
       }
     }
   }
-  
+
   if (latestVersion === '0.0.0') {
     console.error('Failed to retrieve any valid version information');
     return false;
   }
-  
+
   console.log(`Latest version detected: ${latestVersion}`);
-  
+
   // Use version-history.json as the single source of truth for version checking
   const history = readVersionHistory();
-  
+
   // Check if this version already exists in the version history
-  const existingVersionIndex = history.versions.findIndex(entry => entry.version === latestVersion);
+  const existingVersionIndex = history.versions.findIndex((entry: VersionHistoryEntry) => entry.version === latestVersion);
   if (existingVersionIndex !== -1) {
     console.log(`Version ${latestVersion} already exists in version history, no update needed`);
     return false;
   }
-  
+
   // New version found, update both version-history.json and README.md
   console.log(`Adding new version ${latestVersion} to both version-history.json and README.md`);
-  
-  // Read README
-  const readmePath = path.join(process.cwd(), 'README.md');
-  if (!fs.existsSync(readmePath)) {
-    console.error('README.md file not found');
-    return false;
+
+  // Read README using utility function
+  const readmePath = 'README.md'; // Relative path for util function
+  let readmeContent = readFileContent(readmePath);
+  if (readmeContent === null) {
+      console.error('Failed to read README.md');
+      return false; // Stop if README cannot be read
   }
-  
-  let readmeContent = fs.readFileSync(readmePath, 'utf8');
-  
+
   // Create a new platforms object for the history entry
   const platforms: { [platform: string]: string } = {};
-  
+
   // Add Mac platforms
   if (results.mac) {
     for (const [platform, info] of Object.entries(results.mac)) {
       platforms[platform] = info.url;
     }
   }
-  
+
   // Add Windows platforms
   if (results.windows) {
     for (const [platform, info] of Object.entries(results.windows)) {
       platforms[platform] = info.url;
     }
   }
-  
+
   // Add Linux platforms
   if (results.linux) {
     for (const [platform, info] of Object.entries(results.linux)) {
       platforms[platform] = info.url;
     }
   }
-  
+
   // Create the new entry
   const newEntry: VersionHistoryEntry = {
     version: latestVersion,
     date: currentDate,
     platforms
   };
-  
+
   // Add to history and sort by version (newest first)
   history.versions.push(newEntry);
-  history.versions.sort((a, b) => {
-    return b.version.localeCompare(a.version, undefined, { numeric: true });
+  history.versions.sort((a: VersionHistoryEntry, b: VersionHistoryEntry) => {
+    return b.version.localeCompare(a.version, undefined, { numeric: true, sensitivity: 'base' });
   });
-  
+
   // Limit history size to 100 entries to prevent unlimited growth
   if (history.versions.length > 100) {
     history.versions = history.versions.slice(0, 100);
     console.log(`Truncated version history to 100 entries`);
   }
-  
+
   // IMPORTANT: Save the updated history JSON BEFORE updating the README
-  // This ensures the version-history.json is updated even if README update fails
-  try {
-    saveVersionHistory(history);
-    console.log(`Added version ${latestVersion} to version-history.json`);
-  } catch (error) {
-    console.error('Error saving version history:', error instanceof Error ? error.message : 'Unknown error');
-    // Continue with README update even if version history save fails
+  // Save history using utility function (suffix matches the one in updateReadme)
+  const historySaved = saveVersionHistory(history, '.update-backup');
+  if (historySaved) {
+      console.log(`Added version ${latestVersion} to version-history.json`);
+  } else {
+      console.error('Failed to save updated version history. Aborting README update.');
+      // Decide if you want to proceed or stop if history save fails. Stopping is safer.
+      return false;
   }
-  
+
   // Update the date in the Cursor AI IDE section
   const ideUpdateRegex = /(Official Download Link for The latest version from `\[Cursor AI IDE\]'s \[Check for Updates\.\.\.\]` \(on `)([^`]+)(`\) is:)/;
   readmeContent = readmeContent.replace(ideUpdateRegex, `$1${currentDate}$3`);
-  
+
   // Also update the date in the website section
   const websiteUpdateRegex = /(Official Download Link for The latest version from \[Cursor AI's Website\]\(https:\/\/www\.cursor\.com\/downloads\) \(on `)([^`]+)(`\) is:)/;
   readmeContent = readmeContent.replace(websiteUpdateRegex, `$1${currentDate}$3`);
-  
+
   // Add new row to the table for the latest version
   const tableStartRegex = /\| Version \| Date \| Mac Installer \| Windows Installer \| Linux Installer \|\n\| --- \| --- \| --- \| --- \| --- \|/;
-  
+
   // Generate Mac links section
   let macLinks = '';
   if (results.mac) {
@@ -324,10 +225,10 @@ async function updateReadme(): Promise<boolean> {
       }
       return null;
     }).filter(Boolean);
-    
+
     macLinks = macUrls.join(' <br>');
   }
-  
+
   // Generate Windows links section
   let windowsLinks = '';
   if (results.windows) {
@@ -337,10 +238,10 @@ async function updateReadme(): Promise<boolean> {
       }
       return null;
     }).filter(Boolean);
-    
+
     windowsLinks = winUrls.join('<br>');
   }
-  
+
   // Generate Linux link
   let linuxLinks = 'Not Ready';
   if (results.linux) {
@@ -350,75 +251,75 @@ async function updateReadme(): Promise<boolean> {
       }
       return null;
     }).filter(Boolean);
-    
+
     if (linuxUrls.length > 0) {
       linuxLinks = linuxUrls.join('<br>');
     }
   }
-  
+
   // New table row
   const newRow = `\n| ${latestVersion} | ${currentDate} | ${macLinks} | ${windowsLinks} | ${linuxLinks} |`;
-  
+
   // Insert the new row after the table header
   readmeContent = readmeContent.replace(tableStartRegex, `$&${newRow}`);
-  
-  // Save the updated README
-  try {
-    fs.writeFileSync(readmePath, readmeContent);
-    console.log(`README.md updated with Cursor version ${latestVersion}`);
-  } catch (error) {
-    console.error('Error saving README:', error instanceof Error ? error.message : 'Unknown error');
-    return false;
+
+  // Save the updated README using utility function
+  const readmeSaved = writeFileContent(readmePath, readmeContent, '.update-backup');
+  if (readmeSaved) {
+      console.log(`README.md updated with Cursor version ${latestVersion}`);
+  } else {
+      console.error('Failed to save updated README.md');
+      // Consider what to do if README save fails after history was saved.
+      // Maybe try to revert history? For now, just report error.
+      return false;
   }
-  
+
   return true;
 }
 
-/**
- * Update version history JSON with new version information - deprecated, now handled in updateReadme
- */
+// This function is deprecated and can be removed or kept as-is if needed for reference
 function updateVersionHistory(version: string, date: string, results: ResultMap): void {
   console.warn('updateVersionHistory is deprecated - version history is now updated directly in updateReadme');
-  
+
   // For backward compatibility, create and save a version history entry
   if (!version || !date || !results) {
     console.error('Invalid parameters provided to updateVersionHistory');
     return;
   }
-  
+
   try {
     // Read existing history
     const history = readVersionHistory();
-    
+
     // Check if this version already exists
-    if (history.versions.some(v => v.version === version)) {
+    if (history.versions.some((v: VersionHistoryEntry) => v.version === version)) {
       console.log(`Version ${version} already exists in version history`);
       return;
     }
-    
+
     // Prepare platforms data from results
     const platforms: { [platform: string]: string } = {};
-    
+
     // Extract platforms and URLs from results
-    Object.entries(results).forEach(([osKey, osData]) => {
-      Object.entries(osData).forEach(([platform, info]) => {
+    Object.entries(results).forEach(([osKey, osData]) => { // osKey is string, osData is { [platform: string]: VersionInfo }
+      Object.entries(osData).forEach(([platform, info]: [string, VersionInfo]) => {
         platforms[platform] = info.url;
-      });
+      }); // Add type annotation
     });
-    
+
     // Create new entry
     const newEntry: VersionHistoryEntry = {
       version,
       date,
       platforms
     };
-    
+
     // Add to history and sort
     history.versions.push(newEntry);
-    history.versions.sort((a, b) => {
-      return b.version.localeCompare(a.version, undefined, { numeric: true });
+    history.versions.sort((a: VersionHistoryEntry, b: VersionHistoryEntry) => {
+      return b.version.localeCompare(a.version, undefined, { numeric: true, sensitivity: 'base' });
     });
-    
+
     // Save updated history
     saveVersionHistory(history);
     console.log(`Added version ${version} to version-history.json via deprecated method`);
@@ -434,63 +335,55 @@ async function main(): Promise<void> {
   try {
     const startTime = Date.now();
     console.log(`Starting update process at ${new Date().toISOString()}`);
-    
+
     // Run the update
     const updated = await updateReadme();
     const elapsedTime = Date.now() - startTime;
-    
+
     if (updated) {
       console.log(`Update completed successfully in ${elapsedTime}ms. Found new version.`);
     } else {
       console.log(`Update completed in ${elapsedTime}ms. No new version found.`);
     }
 
-    // Double-check version history JSON file exists at the end
-    const historyPath = path.join(process.cwd(), 'version-history.json');
-    if (!fs.existsSync(historyPath)) {
-      console.warn('Warning: version-history.json does not exist after update. This might indicate an issue.');
-    } else {
-      try {
-        // Just checking that the file is valid JSON
-        const content = fs.readFileSync(historyPath, 'utf8');
-        const historyJson = JSON.parse(content) as VersionHistory;
-        console.log('Verified version-history.json exists and contains valid JSON.');
-        
+    // Double-check version history JSON file exists and is valid at the end
+    const historyJson = readVersionHistory(); // Use util which handles existence and parsing errors
+    if (historyJson.versions.length > 0) {
+        console.log('Verified version-history.json exists and contains version data.');
+
         // Verify that the latest version from README is in version-history.json
-        const readmePath = path.join(process.cwd(), 'README.md');
-        if (fs.existsSync(readmePath)) {
-          const readmeContent = fs.readFileSync(readmePath, 'utf8');
-          
+        const readmeContent = readFileContent('README.md');
+        if (readmeContent) { // Check if readme was read successfully
           // Extract the latest version from table - look for the first row after header
           const versionMatch = readmeContent.match(/\| (\d+\.\d+\.\d+) \| (\d{4}-\d{2}-\d{2}) \|/);
           if (versionMatch && versionMatch[1]) {
             const latestVersionInReadme = versionMatch[1];
             const latestDateInReadme = versionMatch[2];
-            
+
             console.log(`Latest version in README.md: ${latestVersionInReadme} (${latestDateInReadme})`);
-            
+
             // Check if this version exists in history
-            const versionExists = historyJson.versions.some(v => v.version === latestVersionInReadme);
+            const versionExists = historyJson.versions.some((v: VersionHistoryEntry) => v.version === latestVersionInReadme);
             if (!versionExists) {
               console.warn(`WARNING: Version ${latestVersionInReadme} is in README.md but not in version-history.json.`);
               console.log(`Attempting to extract data from README.md and update version-history.json...`);
-              
+
               // Extract URLs for this version from README
               const sectionRegex = new RegExp(`\\| ${latestVersionInReadme} \\| ${latestDateInReadme} \\| (.*?) \\| (.*?) \\| (.*?) \\|`);
               const sectionMatch = readmeContent.match(sectionRegex);
-              
+
               if (sectionMatch) {
                 const macSection = sectionMatch[1];
                 const windowsSection = sectionMatch[2];
                 const linuxSection = sectionMatch[3];
-                
+
                 const platforms: { [platform: string]: string } = {};
-                
+
                 // Parse Mac links
                 if (macSection) {
                   const macLinks = macSection.match(/\[([^\]]+)\]\(([^)]+)\)/g);
                   if (macLinks) {
-                    macLinks.forEach(link => {
+                    macLinks.forEach((link: string) => { // Add type
                       const parts = link.match(/\[([^\]]+)\]\(([^)]+)\)/);
                       if (parts && parts[1] && parts[2]) {
                         platforms[parts[1]] = parts[2];
@@ -498,12 +391,12 @@ async function main(): Promise<void> {
                     });
                   }
                 }
-                
+
                 // Parse Windows links
                 if (windowsSection) {
                   const winLinks = windowsSection.match(/\[([^\]]+)\]\(([^)]+)\)/g);
                   if (winLinks) {
-                    winLinks.forEach(link => {
+                    winLinks.forEach((link: string) => { // Add type
                       const parts = link.match(/\[([^\]]+)\]\(([^)]+)\)/);
                       if (parts && parts[1] && parts[2]) {
                         platforms[parts[1]] = parts[2];
@@ -511,12 +404,12 @@ async function main(): Promise<void> {
                     });
                   }
                 }
-                
+
                 // Parse Linux links
                 if (linuxSection && linuxSection !== 'Not Ready') {
                   const linuxLinks = linuxSection.match(/\[([^\]]+)\]\(([^)]+)\)/g);
                   if (linuxLinks) {
-                    linuxLinks.forEach(link => {
+                    linuxLinks.forEach((link: string) => { // Add type
                       const parts = link.match(/\[([^\]]+)\]\(([^)]+)\)/);
                       if (parts && parts[1] && parts[2]) {
                         platforms[parts[1]] = parts[2];
@@ -524,7 +417,7 @@ async function main(): Promise<void> {
                     });
                   }
                 }
-                
+
                 // Add the entry to version history
                 if (Object.keys(platforms).length > 0) {
                   const newEntry: VersionHistoryEntry = {
@@ -532,16 +425,16 @@ async function main(): Promise<void> {
                     date: latestDateInReadme,
                     platforms
                   };
-                  
+
                   historyJson.versions.push(newEntry);
-                  
+
                   // Sort and save
-                  historyJson.versions.sort((a, b) => {
-                    return b.version.localeCompare(a.version, undefined, { numeric: true });
+                  historyJson.versions.sort((a: VersionHistoryEntry, b: VersionHistoryEntry) => {
+                    return b.version.localeCompare(a.version, undefined, { numeric: true, sensitivity: 'base' });
                   });
-                  
-                  // Save the updated history
-                  saveVersionHistory(historyJson);
+
+                  // Save the updated history using util function
+                  saveVersionHistory(historyJson, '.readme-sync-backup');
                   console.log(`Successfully added version ${latestVersionInReadme} from README.md to version-history.json`);
                 } else {
                   console.error(`Failed to extract platform links for version ${latestVersionInReadme}`);
@@ -551,11 +444,9 @@ async function main(): Promise<void> {
               }
             }
           }
-        }
-      } catch (err) {
-        console.warn('Warning: version-history.json exists but contains invalid JSON:', 
-          err instanceof Error ? err.message : 'Unknown error');
-      }
+        } // Closes if (readmeContent)
+    } else { // Closes if (historyJson.versions.length > 0)
+         console.warn('Warning: version-history.json check failed (file missing, invalid, or empty).');
     }
   } catch (error) {
     console.error('Critical error during update process:', error instanceof Error ? error.message : 'Unknown error');
@@ -565,21 +456,15 @@ async function main(): Promise<void> {
 }
 
 // Export functions for testing
-export { 
-  fetchLatestDownloadUrl, 
-  updateReadme, 
-  readVersionHistory, 
-  saveVersionHistory, 
-  updateVersionHistory,
-  extractVersion,
-  formatDate,
+export {
+  fetchLatestDownloadUrl,
+  updateReadme,
+  // No longer exporting local functions: readVersionHistory, saveVersionHistory, updateVersionHistory, extractVersion, formatDate
   main
 };
 
-// Run the update
-if (require.main === module) {
-  main().catch(error => {
-    console.error('Unhandled error:', error instanceof Error ? error.message : 'Unknown error');
-    process.exit(1);
-  });
-} 
+// Keep execution logic if this script is run directly
+main().catch(error => {
+  console.error('Unhandled error in main:', error instanceof Error ? error.message : 'Unknown error');
+  process.exit(1);
+});

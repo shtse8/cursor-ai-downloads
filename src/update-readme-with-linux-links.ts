@@ -1,42 +1,11 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import { fileURLToPath } from 'url';
-
-// Get dirname in ESM
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Interface for version history JSON
-interface VersionHistoryEntry {
-  version: string;
-  date: string;
-  platforms: {
-    [platform: string]: string; // platform -> download URL
-  };
-}
-
-interface VersionHistory {
-  versions: VersionHistoryEntry[];
-}
-
-/**
- * Read version history from JSON file
- */
-function readVersionHistory(): VersionHistory {
-  const historyPath = path.join(process.cwd(), 'version-history.json');
-  if (fs.existsSync(historyPath)) {
-    try {
-      const jsonData = fs.readFileSync(historyPath, 'utf8');
-      return JSON.parse(jsonData) as VersionHistory;
-    } catch (error) {
-      console.error('Error reading version history:', error instanceof Error ? error.message : 'Unknown error');
-      return { versions: [] };
-    }
-  } else {
-    console.log('version-history.json not found, creating a new file');
-    return { versions: [] };
-  }
-}
+import {
+  VersionHistoryEntry,
+  VersionHistory,
+  readVersionHistory,
+  readFileContent,
+  writeFileContent
+} from './utils.js'; // Import from utils
+// Types and readVersionHistory are imported from utils
 
 /**
  * Update README.md with Linux links from version-history.json
@@ -47,19 +16,15 @@ async function updateReadmeWithLinuxLinks(): Promise<void> {
   // Read version history
   const history = readVersionHistory();
   
-  // Read README.md content
-  const readmePath = path.join(process.cwd(), 'README.md');
-  if (!fs.existsSync(readmePath)) {
-    console.error('README.md file not found');
-    return;
+  // Read README.md content using utility function
+  const readmePath = 'README.md'; // Relative path for util function
+  let readmeContent = readFileContent(readmePath);
+  if (readmeContent === null) {
+    console.error('Failed to read README.md');
+    return; // Stop if README cannot be read
   }
   
-  // Create a backup of the README.md file
-  const backupPath = path.join(process.cwd(), 'README.md.linux-update-backup');
-  fs.copyFileSync(readmePath, backupPath);
-  console.log(`Created backup of README.md at ${backupPath}`);
-  
-  let readmeContent = fs.readFileSync(readmePath, 'utf8');
+  // Backup is handled by writeFileContent
   
   // First, fix duplicate entries for 0.46.10
   const duplicatePattern = /\| 0\.46\.10 \| 2025-03-06 \|.*?\| .*?linux-x64.*?\) \|\n/s;
@@ -70,15 +35,17 @@ async function updateReadmeWithLinuxLinks(): Promise<void> {
   // | 0.46.8 | 2025-03-01 | [darwin-universal](...)... | [win32-x64](...)... | Not Ready |
   const notReadyPattern = /\| ([\d\.]+) \| ([\d-]+) \| (.*?) \| (.*?) \| Not Ready \|/g;
   
+  let changesMade = false; // Track if any changes were made
   readmeContent = readmeContent.replace(notReadyPattern, (match, version, date, macLinks, winLinks) => {
     // Find this version in the history
-    const versionEntry = history.versions.find(entry => entry.version === version);
+    const versionEntry = history.versions.find((entry: VersionHistoryEntry) => entry.version === version); // Add type
     
     if (versionEntry && versionEntry.platforms['linux-x64'] && versionEntry.platforms['linux-arm64']) {
       // Create Linux links section
       const linuxLinks = `[linux-x64](${versionEntry.platforms['linux-x64']})<br>[linux-arm64](${versionEntry.platforms['linux-arm64']})`;
       
       console.log(`Updating Linux links for version ${version}`);
+      changesMade = true; // Mark that a change was made
       return `| ${version} | ${date} | ${macLinks} | ${winLinks} | ${linuxLinks} |`;
     }
     
@@ -87,13 +54,27 @@ async function updateReadmeWithLinuxLinks(): Promise<void> {
     return match;
   });
   
-  // Write updated content back to README.md
-  fs.writeFileSync(readmePath, readmeContent);
-  console.log('README.md has been updated with Linux links');
+  // Write updated content back to README.md only if changes were made
+  if (changesMade) {
+    const readmeSaved = writeFileContent(readmePath, readmeContent, '.update-readme-linux-backup');
+    if (readmeSaved) {
+        console.log('README.md has been updated with Linux links');
+    } else {
+        console.error('Failed to save updated README.md');
+    }
+  } else {
+    console.log('No "Not Ready" entries found needing update in README.md');
+  }
 }
 
 // Run the update process
-updateReadmeWithLinuxLinks().catch(error => {
-  console.error('Error updating README.md:', error instanceof Error ? error.message : 'Unknown error');
-  process.exit(1);
-}); 
+// Keep execution logic if this script is run directly
+if (require.main === module) {
+    updateReadmeWithLinuxLinks().catch(error => {
+      console.error('Error updating README.md:', error instanceof Error ? error.message : 'Unknown error');
+      process.exit(1);
+    });
+}
+
+// Export for potential testing or reuse
+export { updateReadmeWithLinuxLinks };
