@@ -1,4 +1,4 @@
-/* Custom Styles for Cursor Version History Page */
+/* Custom Styles for Cursor Version History Page (Reverted for Wide Table) */
 
 body {
     padding-top: 1rem;
@@ -19,51 +19,45 @@ header p {
 #latest-version-section h2 {
     margin-bottom: 0.5rem;
 }
-.latest-links .os-group {
+#latest-version-details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0 0;
+}
+#latest-version-details li {
     margin-bottom: 0.5rem;
 }
-.latest-links .os-group strong {
+#latest-version-details li strong {
     display: inline-block;
     width: 70px; /* Adjust as needed */
     margin-right: 0.5rem;
 }
-.latest-links a {
-    margin-right: 0.75rem; /* Space between symbol links */
-    text-decoration: none; /* Optional: remove underline from symbols */
-    font-size: 1.1rem; /* Slightly larger symbols */
-}
-.latest-links a:hover {
-    text-decoration: none; /* Keep underline off on hover */
+#latest-version-details a {
+    margin-right: 0.5rem;
 }
 
 
-/* Table Styling */
+/* Table Styling for Wide Table */
 #version-table th,
 #version-table td {
-    padding: 0.6rem 0.8rem; /* Adjust padding */
+    white-space: nowrap; /* Prevent links from wrapping - essential for wide table */
+    padding: 0.5rem 0.75rem; /* Original padding */
     font-size: 0.85rem;
-    text-align: left; /* Default align left */
+    text-align: center; /* Center align download links */
     vertical-align: middle; /* Align content vertically centered */
-    white-space: nowrap; /* Prevent wrapping within cells initially */
 }
 
-/* Style for cells containing symbol links */
-#version-table td.symbol-links {
-    white-space: normal; /* Allow wrapping if too many symbols */
+/* Align version and date left */
+#version-table th:first-child,
+#version-table td:first-child,
+#version-table th:nth-child(2),
+#version-table td:nth-child(2) {
+    text-align: left;
+    white-space: normal; /* Allow version/date to wrap if needed */
 }
 
-#version-table td.symbol-links a {
-    display: inline-block; /* Keep links inline */
-    margin-right: 0.5rem; /* Add space between symbol links */
-    margin-bottom: 0; /* Remove bottom margin */
-    text-decoration: none; /* Optional: remove underline from symbols */
-    font-size: 1rem; /* Adjust symbol size if needed */
-}
-#version-table td.symbol-links a:last-child {
-    margin-right: 0; /* Remove margin from last link */
-}
-#version-table td.symbol-links a:hover {
-    text-decoration: none; /* Keep underline off on hover */
+#version-table a {
+    display: inline-block; /* Ensure links behave predictably */
 }
 
 

@@ -9,32 +9,32 @@ document.addEventListener('DOMContentLoaded', () => {
     // Define the path to the version history file in the GitHub repository
     const historyUrl = 'https://raw.githubusercontent.com/shtse8/cursor-ai-downloads/main/version-history.json';
 
-    // Define symbols for platforms (consistent with the TS script)
-    const SYMBOLS = {
-        'darwin-universal': '🍎U',
-        'darwin-x64': '🍎I',
-        'darwin-arm64': '🍎A',
-        'win32-x64': '🪟64',
-        'win32-arm64': '🪟A',
-        'linux-x64': '🐧64',
-        'linux-arm64': '🐧A'
-    };
-
     let allVersions = []; // To store all fetched versions for filtering
 
     /**
-     * Generates an HTML link string using a symbol or an empty string if no URL.
+     * Generates an HTML link string or 'N/A'.
      * @param {string|undefined} url - The download URL.
-     * @param {string} platformKey - The key corresponding to the platform symbol.
-     * @returns {string} HTML string for the link or empty string.
+     * @returns {string} HTML string for the link or 'N/A'.
      */
-    function createSymbolLink(url, platformKey) {
-        const symbol = SYMBOLS[platformKey] || platformKey; // Fallback to key
-        return url ? `<a href="${url}" target="_blank" rel="noopener noreferrer" title="${platformKey}">${symbol}</a>` : '';
+    function createLinkCell(url) {
+        const linkContent = url ? `<a href="${url}" target="_blank" rel="noopener noreferrer">Download</a>` : 'N/A';
+        return `<td>${linkContent}</td>`;
     }
 
+     /**
+     * Generates a download link string for the latest version section.
+     * @param {string|undefined} url - The download URL.
+     * @param {string} label - The platform label.
+     * @returns {string} HTML string for the link or 'N/A'.
+     */
+     function createLatestLink(url, label) {
+        // Revert to using text label for consistency, can be adjusted if needed
+        return url ? `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>` : `${label}: N/A`;
+    }
+
+
     /**
-     * Renders the latest version details using symbols.
+     * Renders the latest version details with individual links.
      * @param {object|undefined} latestVersion - The latest version entry object.
      */
     function renderLatestVersion(latestVersion) {
@@ -48,31 +48,34 @@ document.addEventListener('DOMContentLoaded', () => {
         const { version, date, platforms } = latestVersion;
         const displayDate = date || 'N/A';
 
-        const macUniLink = createSymbolLink(platforms['darwin-universal'], 'darwin-universal');
-        const macX64Link = createSymbolLink(platforms['darwin-x64'], 'darwin-x64');
-        const macArm64Link = createSymbolLink(platforms['darwin-arm64'], 'darwin-arm64');
-        const winX64Link = createSymbolLink(platforms['win32-x64'], 'win32-x64');
-        const winArm64Link = createSymbolLink(platforms['win32-arm64'], 'win32-arm64');
-        const linuxX64Link = createSymbolLink(platforms['linux-x64'], 'linux-x64');
-        const linuxArm64Link = createSymbolLink(platforms['linux-arm64'], 'linux-arm64');
+        // Revert to creating individual links
+        const macUniLink = createLatestLink(platforms['darwin-universal'], 'macOS Universal');
+        const macX64Link = createLatestLink(platforms['darwin-x64'], 'macOS Intel');
+        const macArm64Link = createLatestLink(platforms['darwin-arm64'], 'macOS Apple Silicon');
+        const winX64Link = createLatestLink(platforms['win32-x64'], 'Windows x64');
+        const winArm64Link = createLatestLink(platforms['win32-arm64'], 'Windows ARM64');
+        const linuxX64Link = createLatestLink(platforms['linux-x64'], 'Linux x64');
+        const linuxArm64Link = createLatestLink(platforms['linux-arm64'], 'Linux ARM64');
 
-        // Filter out empty links for cleaner display and join with space
-        const macLinksArr = [macUniLink, macX64Link, macArm64Link].filter(Boolean);
-        const winLinksArr = [winX64Link, winArm64Link].filter(Boolean);
-        const linuxLinksArr = [linuxX64Link, linuxArm64Link].filter(Boolean);
+        // Filter out N/A links for cleaner display
+        const macLinksArr = [macUniLink, macX64Link, macArm64Link].filter(link => !link.includes(': N/A'));
+        const winLinksArr = [winX64Link, winArm64Link].filter(link => !link.includes(': N/A'));
+        const linuxLinksArr = [linuxX64Link, linuxArm64Link].filter(link => !link.includes(': N/A'));
 
-        let details = `<p><strong>Version: ${version}</strong> (${displayDate})</p><div class="latest-links">`; // Use a div for better styling control
-        if (macLinksArr.length > 0) details += `<div class="os-group"><strong>macOS:</strong> ${macLinksArr.join(' ')}</div>`;
-        if (winLinksArr.length > 0) details += `<div class="os-group"><strong>Windows:</strong> ${winLinksArr.join(' ')}</div>`;
-        if (linuxLinksArr.length > 0) details += `<div class="os-group"><strong>Linux:</strong> ${linuxLinksArr.join(' ')}</div>`;
-        details += `</div>`;
+        // Revert to original display format or similar
+        let details = `<p><strong>Version: ${version}</strong> (${displayDate})</p><ul>`;
+        if (macLinksArr.length > 0) details += `<li><strong>macOS:</strong> ${macLinksArr.join(' | ')}</li>`;
+        if (winLinksArr.length > 0) details += `<li><strong>Windows:</strong> ${winLinksArr.join(' | ')}</li>`;
+        if (linuxLinksArr.length > 0) details += `<li><strong>Linux:</strong> ${linuxLinksArr.join(' | ')}</li>`;
+        details += `</ul>`;
+
 
         latestVersionDetailsDiv.innerHTML = details;
     }
 
 
     /**
-     * Renders the version history table with grouped OS columns and symbol links.
+     * Renders the version history table with separate columns for each platform/arch.
      * @param {Array} versions - Array of version objects to render.
      */
     function renderTable(versions) {
@@ -94,37 +97,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const { version, date, platforms } = entry;
             const displayDate = date || 'N/A';
 
-            // Group macOS links using symbols
-            const macLinks = [
-                createSymbolLink(platforms['darwin-universal'], 'darwin-universal'),
-                createSymbolLink(platforms['darwin-x64'], 'darwin-x64'),
-                createSymbolLink(platforms['darwin-arm64'], 'darwin-arm64')
-            ].filter(Boolean).join(' '); // Filter out empty strings and join with space
-
-            // Group Windows links using symbols
-            const winLinks = [
-                createSymbolLink(platforms['win32-x64'], 'win32-x64'),
-                createSymbolLink(platforms['win32-arm64'], 'win32-arm64')
-            ].filter(Boolean).join(' ');
-
-            // Group Linux links using symbols
-            const linuxLinks = [
-                createSymbolLink(platforms['linux-x64'], 'linux-x64'),
-                createSymbolLink(platforms['linux-arm64'], 'linux-arm64')
-            ].filter(Boolean).join(' ');
-
-            // Use 'N/A' if no links exist for an OS after filtering
-            const macCellContent = macLinks || 'N/A';
-            const winCellContent = winLinks || 'N/A';
-            const linuxCellContent = linuxLinks || 'N/A';
-
-            // Match the headers in index.html: Version, Date, macOS, Windows, Linux
+            // Revert to creating individual cells for each platform/arch
             row.innerHTML = `
                 <td>${version}</td>
                 <td>${displayDate}</td>
-                <td class="symbol-links">${macCellContent}</td>
-                <td class="symbol-links">${winCellContent}</td>
-                <td class="symbol-links">${linuxCellContent}</td>
+                ${createLinkCell(platforms['darwin-universal'])}
+                ${createLinkCell(platforms['darwin-x64'])}
+                ${createLinkCell(platforms['darwin-arm64'])}
+                ${createLinkCell(platforms['win32-x64'])}
+                ${createLinkCell(platforms['win32-arm64'])}
+                ${createLinkCell(platforms['linux-x64'])}
+                ${createLinkCell(platforms['linux-arm64'])}
             `;
             versionTableBody.appendChild(row);
         });
@@ -170,7 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error fetching or processing version history:', error);
             if (latestVersionDetailsDiv) latestVersionDetailsDiv.innerHTML = '<p>Error loading latest version details.</p>';
             if (versionTableBody) {
-                versionTableBody.innerHTML = `<tr><td colspan="5">Error loading version history. Please try again later.</td></tr>`; // Updated colspan
+                // Update colspan to match the original number of columns (Version + Date + 7 platforms = 9)
+                versionTableBody.innerHTML = `<tr><td colspan="9">Error loading version history. Please try again later.</td></tr>`;
                 versionTable.style.display = ''; // Show table to display error
             }
         } finally {
