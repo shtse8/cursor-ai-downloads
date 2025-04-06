@@ -19,20 +19,21 @@ header p {
 #latest-version-section h2 {
     margin-bottom: 0.5rem;
 }
-#latest-version-details ul {
-    list-style: none;
-    padding: 0;
-    margin: 0.5rem 0 0 0;
-}
-#latest-version-details li {
+.latest-links .os-group {
     margin-bottom: 0.5rem;
 }
-#latest-version-details li strong {
+.latest-links .os-group strong {
     display: inline-block;
     width: 70px; /* Adjust as needed */
-}
-#latest-version-details a {
     margin-right: 0.5rem;
+}
+.latest-links a {
+    margin-right: 0.75rem; /* Space between symbol links */
+    text-decoration: none; /* Optional: remove underline from symbols */
+    font-size: 1.1rem; /* Slightly larger symbols */
+}
+.latest-links a:hover {
+    text-decoration: none; /* Keep underline off on hover */
 }
 
 
@@ -42,26 +43,29 @@ header p {
     padding: 0.6rem 0.8rem; /* Adjust padding */
     font-size: 0.85rem;
     text-align: left; /* Default align left */
-    vertical-align: top; /* Align content to the top */
-    white-space: normal; /* Allow content wrapping */
+    vertical-align: middle; /* Align content vertically centered */
+    white-space: nowrap; /* Prevent wrapping within cells initially */
 }
 
-/* Center align specific headers if needed, but left is generally better for readability */
-/* #version-table th:nth-child(3),
-#version-table th:nth-child(4),
-#version-table th:nth-child(5) {
-    text-align: center;
-} */
+/* Style for cells containing symbol links */
+#version-table td.symbol-links {
+    white-space: normal; /* Allow wrapping if too many symbols */
+}
 
-/* Ensure links within table cells stack vertically */
-#version-table td a {
-    display: block; /* Make links block elements */
-    margin-bottom: 0.25rem; /* Add space between links */
-    white-space: nowrap; /* Prevent individual links from wrapping */
+#version-table td.symbol-links a {
+    display: inline-block; /* Keep links inline */
+    margin-right: 0.5rem; /* Add space between symbol links */
+    margin-bottom: 0; /* Remove bottom margin */
+    text-decoration: none; /* Optional: remove underline from symbols */
+    font-size: 1rem; /* Adjust symbol size if needed */
 }
-#version-table td a:last-child {
-    margin-bottom: 0; /* Remove margin from last link */
+#version-table td.symbol-links a:last-child {
+    margin-right: 0; /* Remove margin from last link */
 }
+#version-table td.symbol-links a:hover {
+    text-decoration: none; /* Keep underline off on hover */
+}
+
 
 /* Add some spacing below the search input */
 #search-input {

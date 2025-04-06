@@ -7,18 +7,30 @@ import {
 
 const MAX_VERSIONS_IN_README = 10;
 
+// Define symbols for platforms
+const SYMBOLS = {
+    'darwin-universal': '🍎U',
+    'darwin-x64': '🍎I',
+    'darwin-arm64': '🍎A',
+    'win32-x64': '🪟64',
+    'win32-arm64': '🪟A',
+    'linux-x64': '🐧64',
+    'linux-arm64': '🐧A'
+};
+
 /**
- * Generates a Markdown link or 'N/A' text.
+ * Generates a Markdown link using a symbol or 'N/A' text.
  * @param url - The URL for the download link.
- * @param label - Optional label for the link, defaults to the platform name if available.
- * @returns Markdown link string or 'N/A'.
+ * @param platformKey - The key corresponding to the platform symbol.
+ * @returns Markdown link string or empty string if no URL.
  */
-function generateLink(url: string | undefined, label: string): string {
-  return url ? `[${label}](${url})` : `${label}: N/A`;
+function generateSymbolLink(url: string | undefined, platformKey: keyof typeof SYMBOLS): string {
+  const symbol = SYMBOLS[platformKey] || platformKey; // Fallback to key if symbol not found
+  return url ? `[${symbol}](${url})` : ''; // Return empty string if no URL
 }
 
 /**
- * Generates the Markdown table content with grouped OS columns.
+ * Generates the Markdown table content with grouped OS columns and symbol links.
  * @param versions - Array of recent version history entries.
  * @returns The complete Markdown table as a string.
  */
@@ -30,30 +42,29 @@ function generateMarkdownTable(versions: VersionHistoryEntry[]): string {
     const { version, date, platforms } = entry;
     const displayDate = date || 'N/A';
 
-    // Group macOS links
+    // Group macOS links using symbols
     const macLinks = [
-      generateLink(platforms['darwin-universal'], 'Universal'),
-      generateLink(platforms['darwin-x64'], 'Intel'),
-      generateLink(platforms['darwin-arm64'], 'Apple Silicon')
-    ].filter(link => !link.endsWith(': N/A')).join('<br>'); // Filter out N/A links before joining
+      generateSymbolLink(platforms['darwin-universal'], 'darwin-universal'),
+      generateSymbolLink(platforms['darwin-x64'], 'darwin-x64'),
+      generateSymbolLink(platforms['darwin-arm64'], 'darwin-arm64')
+    ].filter(Boolean).join(' '); // Filter out empty strings and join with space
 
-    // Group Windows links
+    // Group Windows links using symbols
     const winLinks = [
-      generateLink(platforms['win32-x64'], 'x64'),
-      generateLink(platforms['win32-arm64'], 'ARM64')
-    ].filter(link => !link.endsWith(': N/A')).join('<br>');
+      generateSymbolLink(platforms['win32-x64'], 'win32-x64'),
+      generateSymbolLink(platforms['win32-arm64'], 'win32-arm64')
+    ].filter(Boolean).join(' ');
 
-    // Group Linux links
+    // Group Linux links using symbols
     const linuxLinks = [
-      generateLink(platforms['linux-x64'], 'x64'),
-      generateLink(platforms['linux-arm64'], 'ARM64')
-    ].filter(link => !link.endsWith(': N/A')).join('<br>');
+      generateSymbolLink(platforms['linux-x64'], 'linux-x64'),
+      generateSymbolLink(platforms['linux-arm64'], 'linux-arm64')
+    ].filter(Boolean).join(' ');
 
     // Use 'N/A' if no links exist for an OS after filtering
     const macCell = macLinks || 'N/A';
     const winCell = winLinks || 'N/A';
     const linuxCell = linuxLinks || 'N/A';
-
 
     return `| ${version} | ${displayDate} | ${macCell} | ${winCell} | ${linuxCell} |`;
   });
@@ -62,7 +73,7 @@ function generateMarkdownTable(versions: VersionHistoryEntry[]): string {
 }
 
 /**
- * Generates the Markdown content for the latest version details section.
+ * Generates the Markdown content for the latest version details section using symbols.
  * @param latestVersion - The latest version history entry.
  * @returns Markdown string for the latest version details.
  */
@@ -74,25 +85,24 @@ function generateLatestVersionDetails(latestVersion: VersionHistoryEntry | undef
     const { version, date, platforms } = latestVersion;
     const displayDate = date || 'N/A';
 
-    // Create links with platform names as labels
-    const macUniLink = generateLink(platforms['darwin-universal'], 'Universal');
-    const macX64Link = generateLink(platforms['darwin-x64'], 'Intel');
-    const macArm64Link = generateLink(platforms['darwin-arm64'], 'Apple Silicon');
-    const winX64Link = generateLink(platforms['win32-x64'], 'Windows x64');
-    const winArm64Link = generateLink(platforms['win32-arm64'], 'Windows ARM64');
-    const linuxX64Link = generateLink(platforms['linux-x64'], 'Linux x64');
-    const linuxArm64Link = generateLink(platforms['linux-arm64'], 'Linux ARM64');
+    // Create links with symbols
+    const macUniLink = generateSymbolLink(platforms['darwin-universal'], 'darwin-universal');
+    const macX64Link = generateSymbolLink(platforms['darwin-x64'], 'darwin-x64');
+    const macArm64Link = generateSymbolLink(platforms['darwin-arm64'], 'darwin-arm64');
+    const winX64Link = generateSymbolLink(platforms['win32-x64'], 'win32-x64');
+    const winArm64Link = generateSymbolLink(platforms['win32-arm64'], 'win32-arm64');
+    const linuxX64Link = generateSymbolLink(platforms['linux-x64'], 'linux-x64');
+    const linuxArm64Link = generateSymbolLink(platforms['linux-arm64'], 'linux-arm64');
 
-    // Filter out N/A links for cleaner display
-    const macLinksArr = [macUniLink, macX64Link, macArm64Link].filter(link => !link.endsWith(': N/A'));
-    const winLinksArr = [winX64Link, winArm64Link].filter(link => !link.endsWith(': N/A'));
-    const linuxLinksArr = [linuxX64Link, linuxArm64Link].filter(link => !link.endsWith(': N/A'));
-
+    // Filter out empty links for cleaner display
+    const macLinksArr = [macUniLink, macX64Link, macArm64Link].filter(Boolean);
+    const winLinksArr = [winX64Link, winArm64Link].filter(Boolean);
+    const linuxLinksArr = [linuxX64Link, linuxArm64Link].filter(Boolean);
 
     let details = `**Version:** ${version} (${displayDate})\n\n`;
-    if (macLinksArr.length > 0) details += `*   **macOS:** ${macLinksArr.join(' | ')}\n`;
-    if (winLinksArr.length > 0) details += `*   **Windows:** ${winLinksArr.join(' | ')}\n`;
-    if (linuxLinksArr.length > 0) details += `*   **Linux:** ${linuxLinksArr.join(' | ')}\n`;
+    if (macLinksArr.length > 0) details += `*   **macOS:** ${macLinksArr.join(' ')}\n`; // Join with space
+    if (winLinksArr.length > 0) details += `*   **Windows:** ${winLinksArr.join(' ')}\n`;
+    if (linuxLinksArr.length > 0) details += `*   **Linux:** ${linuxLinksArr.join(' ')}\n`;
 
     return details.trim(); // Trim trailing newline if any OS group was empty
 }
@@ -183,4 +193,5 @@ try {
 
 
 // Export for potential testing or reuse
-export { updateReadmeFromHistory, generateMarkdownTable, generateLink, generateLatestVersionDetails };
+// Note: generateLink is no longer used directly by the main function, but kept for potential utility
+export { updateReadmeFromHistory, generateMarkdownTable, generateSymbolLink, generateLatestVersionDetails };
