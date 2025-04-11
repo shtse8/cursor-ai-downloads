@@ -96,7 +96,7 @@ async function fetchLatestDownloadUrl(platform: string): Promise<string | null> 
  * Update the README.md file with latest Cursor links
  */
 async function updateReadme(): Promise<boolean> {
-  console.log(`Starting update check at ${new Date().toISOString()}`);
+  // console.log(`Starting update check at ${new Date().toISOString()}`); // Commented out for GH Action
 
   // Collect all URLs and versions
   const results: ResultMap = {};
@@ -128,7 +128,7 @@ async function updateReadme(): Promise<boolean> {
     return false;
   }
 
-  // console.log(`Latest version detected: ${latestVersion}`); // Removed for cleaner GH Action output
+  // console.log(`Latest version detected: ${latestVersion}`); // Commented out for GH Action
 
   // Use version-history.json as the single source of truth for version checking
   const history = readVersionHistory();
@@ -136,12 +136,12 @@ async function updateReadme(): Promise<boolean> {
   // Check if this version already exists in the version history
   const existingVersionIndex = history.versions.findIndex((entry: VersionHistoryEntry) => entry.version === latestVersion);
   if (existingVersionIndex !== -1) {
-    console.log(`Version ${latestVersion} already exists in version history, no update needed`);
-    return false;
+    // console.log(`Version ${latestVersion} already exists in version history, no update needed`); // Commented out for GH Action
+    // return false; // REMOVED: Allow function to complete to ensure final output is printed
   }
 
   // New version found, update both version-history.json and README.md
-  console.log(`Adding new version ${latestVersion} to both version-history.json and README.md`);
+  // console.log(`Adding new version ${latestVersion} to both version-history.json and README.md`); // Commented out for GH Action
 
   // Read README using utility function
   const readmePath = 'README.md'; // Relative path for util function
@@ -191,14 +191,14 @@ async function updateReadme(): Promise<boolean> {
   // Limit history size to 100 entries to prevent unlimited growth
   if (history.versions.length > 100) {
     history.versions = history.versions.slice(0, 100);
-    console.log(`Truncated version history to 100 entries`);
+    // console.log(`Truncated version history to 100 entries`); // Commented out for GH Action
   }
 
   // IMPORTANT: Save the updated history JSON BEFORE updating the README
   // Save history using utility function (suffix matches the one in updateReadme)
   const historySaved = saveVersionHistory(history, '.update-backup');
   if (historySaved) {
-      console.log(`Added version ${latestVersion} to version-history.json`);
+      // console.log(`Added version ${latestVersion} to version-history.json`); // Commented out for GH Action
   } else {
       console.error('Failed to save updated version history. Aborting README update.');
       // Decide if you want to proceed or stop if history save fails. Stopping is safer.
@@ -216,7 +216,7 @@ async function updateReadme(): Promise<boolean> {
   // Save the updated README using utility function
   const readmeSaved = writeFileContent(readmePath, readmeContent, '.update-backup');
   if (readmeSaved) {
-      console.log(`README.md updated with Cursor version ${latestVersion}`);
+      // console.log(`README.md updated with Cursor version ${latestVersion}`); // Commented out for GH Action
   } else {
       console.error('Failed to save updated README.md');
       // Consider what to do if README save fails after history was saved.
@@ -229,6 +229,7 @@ async function updateReadme(): Promise<boolean> {
 
 // This function is deprecated and can be removed or kept as-is if needed for reference
 function updateVersionHistory(version: string, date: string, results: ResultMap): void {
+  // Keep console.warn as it's already stderr
   console.warn('updateVersionHistory is deprecated - version history is now updated directly in updateReadme');
 
   // For backward compatibility, create and save a version history entry
@@ -243,7 +244,7 @@ function updateVersionHistory(version: string, date: string, results: ResultMap)
 
     // Check if this version already exists
     if (history.versions.some((v: VersionHistoryEntry) => v.version === version)) {
-      console.log(`Version ${version} already exists in version history`);
+      // console.log(`Version ${version} already exists in version history`); // Commented out for GH Action (inside deprecated function)
       return;
     }
 
@@ -272,7 +273,7 @@ function updateVersionHistory(version: string, date: string, results: ResultMap)
 
     // Save updated history
     saveVersionHistory(history);
-    console.log(`Added version ${version} to version-history.json via deprecated method`);
+    // console.log(`Added version ${version} to version-history.json via deprecated method`); // Commented out for GH Action (inside deprecated function)
   } catch (error) {
     console.error('Error in updateVersionHistory:', error instanceof Error ? error.message : 'Unknown error');
   }
@@ -284,13 +285,13 @@ function updateVersionHistory(version: string, date: string, results: ResultMap)
 async function main(): Promise<void> {
   try {
     const startTime = Date.now();
-    // console.log(`Starting update process at ${new Date().toISOString()}`); // Removed for cleaner GH Action output
+    // console.log(`Starting update process at ${new Date().toISOString()}`); // Commented out for GH Action
 
     // Run the update
     const updated = await updateReadme();
     const elapsedTime = Date.now() - startTime;
 
-    // Informational logs removed for cleaner GH Action output
+    // Informational completion logs commented out for GH Action
     // if (updated) {
     //   console.log(`Update completed successfully in ${elapsedTime}ms. Found new version.`);
     // } else {
@@ -300,7 +301,7 @@ async function main(): Promise<void> {
     // Double-check version history JSON file exists and is valid at the end
     const historyJson = readVersionHistory(); // Use util which handles existence and parsing errors
     if (historyJson.versions.length > 0) {
-        // console.log('Verified version-history.json exists and contains version data.'); // Removed for cleaner GH Action output
+        // console.log('Verified version-history.json exists and contains version data.'); // Commented out for GH Action
 
         // Verify that the latest version from README is in version-history.json
         const readmeContent = readFileContent('README.md');
@@ -311,13 +312,13 @@ async function main(): Promise<void> {
             const latestVersionInReadme = versionMatch[1];
             const latestDateInReadme = versionMatch[2];
 
-            // console.log(`Latest version in README.md: ${latestVersionInReadme} (${latestDateInReadme})`); // Removed for cleaner GH Action output
+            // console.log(`Latest version in README.md: ${latestVersionInReadme} (${latestDateInReadme})`); // Commented out for GH Action
 
             // Check if this version exists in history
             const versionExists = historyJson.versions.some((v: VersionHistoryEntry) => v.version === latestVersionInReadme);
             if (!versionExists) {
               console.warn(`WARNING: Version ${latestVersionInReadme} is in README.md but not in version-history.json.`); // Keep warning
-              // console.log(`Attempting to extract data from README.md and update version-history.json...`); // Removed for cleaner GH Action output
+              // console.log(`Attempting to extract data from README.md and update version-history.json...`); // Commented out for GH Action
 
               // Extract URLs for this version from README
               const sectionRegex = new RegExp(`\\| ${latestVersionInReadme} \\| ${latestDateInReadme} \\| (.*?) \\| (.*?) \\| (.*?) \\|`);
@@ -386,7 +387,7 @@ async function main(): Promise<void> {
 
                   // Save the updated history using util function
                   saveVersionHistory(historyJson, '.readme-sync-backup');
-                  // console.log(`Successfully added version ${latestVersionInReadme} from README.md to version-history.json`); // Removed for cleaner GH Action output
+                  // console.log(`Successfully added version ${latestVersionInReadme} from README.md to version-history.json`); // Commented out for GH Action
                 } else {
                   console.error(`Failed to extract platform links for version ${latestVersionInReadme}`);
                 }
