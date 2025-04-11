@@ -61,7 +61,7 @@ export function saveVersionHistory(history: VersionHistory, backupSuffix: string
   try {
     if (fs.existsSync(historyPath)) {
       fs.copyFileSync(historyPath, backupPath);
-      console.log(`Created backup at ${backupPath}`);
+      // console.log(`Created backup at ${backupPath}`); // Commented out for GH Action
     }
   } catch (error) {
      console.error(`Failed to create backup at ${backupPath}:`, error instanceof Error ? error.message : 'Unknown error');
@@ -77,7 +77,7 @@ export function saveVersionHistory(history: VersionHistory, backupSuffix: string
     const tempPath = `${historyPath}.tmp`;
     fs.writeFileSync(tempPath, jsonData, 'utf8');
     fs.renameSync(tempPath, historyPath);
-    console.log(`Version history saved successfully to ${historyPath}`);
+    // console.log(`Version history saved successfully to ${historyPath}`); // Commented out for GH Action
     return true;
   } catch (error) {
     console.error('Error saving version history:', error instanceof Error ? error.message : 'Unknown error');
@@ -85,7 +85,7 @@ export function saveVersionHistory(history: VersionHistory, backupSuffix: string
     try {
         if (fs.existsSync(backupPath)) {
             fs.renameSync(backupPath, historyPath);
-            console.log(`Restored ${historyPath} from backup.`);
+            // console.log(`Restored ${historyPath} from backup.`); // Commented out for GH Action
         }
     } catch (restoreError) {
         console.error(`Failed to restore from backup ${backupPath}:`, restoreError instanceof Error ? restoreError.message : 'Unknown error');
@@ -124,7 +124,7 @@ export function writeFileContent(filePath: string, content: string, backupSuffix
     try {
         if (fs.existsSync(absolutePath)) {
             fs.copyFileSync(absolutePath, backupPath);
-            console.log(`Created backup at ${backupPath}`);
+            // console.log(`Created backup at ${backupPath}`); // Commented out for GH Action
         }
     } catch (error) {
         console.error(`Failed to create backup at ${backupPath}:`, error instanceof Error ? error.message : 'Unknown error');
@@ -136,7 +136,7 @@ export function writeFileContent(filePath: string, content: string, backupSuffix
         const tempPath = `${absolutePath}.tmp`;
         fs.writeFileSync(tempPath, content, 'utf8');
         fs.renameSync(tempPath, absolutePath);
-        console.log(`Content successfully written to ${absolutePath}`);
+        // console.log(`Content successfully written to ${absolutePath}`); // Commented out for GH Action
         return true;
     } catch (error) {
         console.error(`Error writing file ${absolutePath}:`, error instanceof Error ? error.message : 'Unknown error');
@@ -144,7 +144,7 @@ export function writeFileContent(filePath: string, content: string, backupSuffix
         try {
             if (fs.existsSync(backupPath)) {
                 fs.renameSync(backupPath, absolutePath);
-                console.log(`Restored ${absolutePath} from backup.`);
+                // console.log(`Restored ${absolutePath} from backup.`); // Commented out for GH Action
             }
         } catch (restoreError) {
             console.error(`Failed to restore from backup ${backupPath}:`, restoreError instanceof Error ? restoreError.message : 'Unknown error');
