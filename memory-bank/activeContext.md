@@ -20,6 +20,9 @@
     - Updated README intro and added a dedicated 'Quick Download: Latest Version' section.
     - Updated GitHub Pages (`docs/index.html`, `docs/script.js`) to include a similar latest version section and Buy Me a Coffee link.
 
+
+- Identified update-cursor-links.ts as the only valid update script.
+- Marked all other update/readme scripts as obsolete and scheduled for deletion.
 - Fixed duplicate header and table header in README.md download list.
 - Fixed workflow bug: now only commits if new version detected (correct git-check output logic).
 - **Reverted Table Layout Optimization (Based on Feedback)**:
