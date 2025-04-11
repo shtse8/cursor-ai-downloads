@@ -26,8 +26,6 @@
 
 ## Download Links for Previous Versions
 
-| Version | Date | macOS Universal | macOS Intel | macOS Apple Silicon | Windows x64 | Windows ARM64 | Linux x64 | Linux ARM64 |
-|---|---|---|---|---|---|---|---|---|
 <!-- TABLE_START -->
 | Version | Date | macOS Universal | macOS Intel | macOS Apple Silicon | Windows x64 | Windows ARM64 | Linux x64 | Linux ARM64 |
 |---|---|---|---|---|---|---|---|---|
