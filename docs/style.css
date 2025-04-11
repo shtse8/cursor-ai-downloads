@@ -68,6 +68,13 @@ header p {
 
 #version-table a {
     display: inline-block; /* Ensure links behave predictably */
+    text-decoration: none; /* Remove underline from download links */
+}
+
+/* Force all cells to center align */
+#version-table th,
+#version-table td {
+    text-align: center !important;
 }
 
 

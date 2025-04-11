@@ -21,9 +21,11 @@ async function updateReadme() {
     let readmeContent = await fs.readFile(readmePath, 'utf-8');
 
  // Create new download section
-    const tableHeader = '| Version | Date | macOS Universal | macOS Intel | macOS Apple Silicon | Windows x64 | Windows ARM64 | Linux x64 | Linux ARM64 |\n|---|---|---|---|---|---|---|---|---|';
+    // Center align columns 3-9 (download links)
+    const tableHeader = '| Version | Date | macOS Universal | macOS Intel | macOS Apple Silicon | Windows x64 | Windows ARM64 | Linux x64 | Linux ARM64 |\n|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|';
     const downloadTable = versionHistory.slice(0, 20).map((entry) => {
       const platforms = entry.platforms;
+      // Links remain the same, alignment is controlled by header separator
       return `| ${entry.version} | ${entry.date} | ${platforms['darwin-universal'] ? `[⬇️](${platforms['darwin-universal']})` : '-'} | ${platforms['darwin-x64'] ? `[⬇️](${platforms['darwin-x64']})` : '-'} | ${platforms['darwin-arm64'] ? `[⬇️](${platforms['darwin-arm64']})` : '-'} | ${platforms['win32-x64'] ? `[⬇️](${platforms['win32-x64']})` : '-'} | ${platforms['win32-arm64'] ? `[⬇️](${platforms['win32-arm64']})` : '-'} | ${platforms['linux-x64'] ? `[⬇️](${platforms['linux-x64']})` : '-'} | ${platforms['linux-arm64'] ? `[⬇️](${platforms['linux-arm64']})` : '-'} |`;
     }).join('\n');
     const newDownloadSection = `## Download Links for Previous Versions\n\n${tableHeader}\n${downloadTable}`;
