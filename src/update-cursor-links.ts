@@ -128,7 +128,7 @@ async function updateReadme(): Promise<boolean> {
     return false;
   }
 
-  console.log(`Latest version detected: ${latestVersion}`);
+  // console.log(`Latest version detected: ${latestVersion}`); // Removed for cleaner GH Action output
 
   // Use version-history.json as the single source of truth for version checking
   const history = readVersionHistory();
