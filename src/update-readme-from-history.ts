@@ -36,8 +36,9 @@ async function updateReadme() {
     const newDownloadSection = `## Download Links for Previous Versions\n\n${tableHeader}\n${downloadTable}`;
 
 // Update README content if changed
+    const newTableContent = `${tableHeader}\n${downloadTable}`;
 // Remove existing table content between TABLE_START and TABLE_END markers
-readmeContent = readmeContent.replace(/<!-- TABLE_START -->[\s\S]*?<!-- TABLE_END -->/g, `<!-- TABLE_START -->\n${downloadTable}\n<!-- TABLE_END -->`);
+readmeContent = readmeContent.replace(/<!-- TABLE_START -->[\s\S]*?<!-- TABLE_END -->/g, `<!-- TABLE_START -->\n${newTableContent}\n<!-- TABLE_END -->`);
 const newReadmeContent = `${readmeContent.trim()}\n`;
 await fs.writeFile(readmePath, newReadmeContent);
 console.log('README updated with new download links');

@@ -299,6 +299,8 @@
 | Version | Date | macOS Universal | macOS Intel | macOS Apple Silicon | Windows x64 | Windows ARM64 | Linux x64 | Linux ARM64 |
 |---|---|---|---|---|---|---|---|---|
 <!-- TABLE_START -->
+| Version | Date | macOS Universal | macOS Intel | macOS Apple Silicon | Windows x64 | Windows ARM64 | Linux x64 | Linux ARM64 |
+|---|---|---|---|---|---|---|---|---|
 | 0.48.8 | 2025-04-07 | 
         [Download](https://downloads.cursor.com/production/7801a556824585b7f2721900066bc87c4a09b743/darwin/universal/Cursor-darwin-universal.dmg) | 
         [Download](https://downloads.cursor.com/production/7801a556824585b7f2721900066bc87c4a09b743/darwin/x64/Cursor-darwin-x64.dmg) | 
