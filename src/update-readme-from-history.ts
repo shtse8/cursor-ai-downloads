@@ -25,8 +25,8 @@ async function updateReadme() {
     const tableHeader = '| Version | Date | macOS Universal | macOS Intel | macOS Apple Silicon | Windows x64 | Windows ARM64 | Linux x64 | Linux ARM64 |\n|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|';
     // Use direct image path provided by user
     const iconPath = 'assets/download.png'; // Relative to README.md at root
-    // Use HTML img tag within the link to control size in README rendering
-    const createDownloadLink = (url: string | undefined) => url ? `<a href="${url}" target="_blank" rel="noopener noreferrer"><img src="${iconPath}?raw=true" alt="Download" width="16" height="16"></a>` : '-';
+    // Use HTML img tag within the link to control size in README rendering - Updated size to 24x24
+    const createDownloadLink = (url: string | undefined) => url ? `<a href="${url}" target="_blank" rel="noopener noreferrer"><img src="${iconPath}?raw=true" alt="Download" width="24" height="24"></a>` : '-';
 
 
     const downloadTable = versionHistory.slice(0, 20).map((entry) => {

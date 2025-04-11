@@ -17,10 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
      * @returns {string} HTML string for the link or 'N/A'.
      */
     function createLinkCell(url) {
-        // Use direct image path provided by user, relative to docs/index.html
-        const iconPath = '../assets/download.png';
-        // Set width and height for consistency
-        const linkContent = url ? `<a href="${url}" target="_blank" rel="noopener noreferrer"><img src="${iconPath}" alt="Download" width="16" height="16"></a>` : 'N/A';
+        // Use image path within docs/assets, relative to docs/index.html
+        const iconPath = 'assets/download.png';
+        // Set width and height to 24x24
+        const linkContent = url ? `<a href="${url}" target="_blank" rel="noopener noreferrer"><img src="${iconPath}" alt="Download" width="24" height="24"></a>` : 'N/A';
         return `<td>${linkContent}</td>`;
     }
 
