@@ -19,6 +19,9 @@
 - **Improved Layout & Content (Based on Feedback)**:
     - Updated README intro and added a dedicated 'Quick Download: Latest Version' section.
     - Updated GitHub Pages (`docs/index.html`, `docs/script.js`) to include a similar latest version section and Buy Me a Coffee link.
+
+- Fixed duplicate header and table header in README.md download list.
+- Fixed workflow bug: now only commits if new version detected (correct git-check output logic).
 - **Reverted Table Layout Optimization (Based on Feedback)**:
     - Restored README and GitHub Pages tables to the original multi-column layout.
     - Reverted changes in related scripts and CSS.

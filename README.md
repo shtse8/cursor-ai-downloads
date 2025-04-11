@@ -289,8 +289,6 @@
 
 ---
 
-## Recent Download Links (Last 10 Versions)
----
 
 ➡️ **For the complete, searchable version history, visit the [GitHub Pages site](https://shtse8.github.io/cursor-ai-downloads/).**
 
@@ -435,8 +433,6 @@
 
 
 
-| Version | Date | macOS Uni | macOS Intel | macOS Apple | Win x64 | Win ARM64 | Linux x64 | Linux ARM64 |
-|---|---|---|---|---|---|---|---|---|
 | 0.48.8 | 2025-04-07 | [Download](https://downloads.cursor.com/production/7801a556824585b7f2721900066bc87c4a09b743/darwin/universal/Cursor-darwin-universal.dmg) | [Download](https://downloads.cursor.com/production/7801a556824585b7f2721900066bc87c4a09b743/darwin/x64/Cursor-darwin-x64.dmg) | [Download](https://downloads.cursor.com/production/7801a556824585b7f2721900066bc87c4a09b743/darwin/arm64/Cursor-darwin-arm64.dmg) | [Download](https://downloads.cursor.com/production/7801a556824585b7f2721900066bc87c4a09b743/win32/x64/system-setup/CursorSetup-x64-0.48.8.exe) | [Download](https://downloads.cursor.com/production/7801a556824585b7f2721900066bc87c4a09b743/win32/arm64/system-setup/CursorSetup-arm64-0.48.8.exe) | [Download](https://downloads.cursor.com/production/7801a556824585b7f2721900066bc87c4a09b743/linux/x64/Cursor-0.48.8-x86_64.AppImage) | [Download](https://downloads.cursor.com/production/7801a556824585b7f2721900066bc87c4a09b743/linux/arm64/Cursor-0.48.8-aarch64.AppImage) |
 | 0.48.7 | 2025-04-02 | [Download](https://downloads.cursor.com/production/66290080aae40d23364ba2371832bda0933a3641/darwin/universal/Cursor-darwin-universal.dmg) | [Download](https://downloads.cursor.com/production/66290080aae40d23364ba2371832bda0933a3641/darwin/x64/Cursor-darwin-x64.dmg) | [Download](https://downloads.cursor.com/production/66290080aae40d23364ba2371832bda0933a3641/darwin/arm64/Cursor-darwin-arm64.dmg) | [Download](https://downloads.cursor.com/production/66290080aae40d23364ba2371832bda0933a3641/win32/x64/user-setup/CursorUserSetup-x64-0.48.7.exe) | [Download](https://downloads.cursor.com/production/66290080aae40d23364ba2371832bda0933a3641/win32/arm64/user-setup/CursorUserSetup-arm64-0.48.7.exe) | [Download](https://downloads.cursor.com/production/66290080aae40d23364ba2371832bda0933a3641/linux/x64/Cursor-0.48.7-x86_64.AppImage) | [Download](https://downloads.cursor.com/production/66290080aae40d23364ba2371832bda0933a3641/linux/arm64/Cursor-0.48.7-aarch64.AppImage) |
 | 0.48.6 | 2025-03-31 | [Download](https://downloads.cursor.com/production/7da827d66e9b56a846349698c70129a436421245/darwin/universal/Cursor-darwin-universal.dmg) | [Download](https://downloads.cursor.com/production/7da827d66e9b56a846349698c70129a436421245/darwin/x64/Cursor-darwin-x64.dmg) | [Download](https://downloads.cursor.com/production/7da827d66e9b56a846349698c70129a436421245/darwin/arm64/Cursor-darwin-arm64.dmg) | [Download](https://downloads.cursor.com/production/7da827d66e9b56a846349698c70129a436421245/win32/x64/user-setup/CursorUserSetup-x64-0.48.6.exe) | [Download](https://downloads.cursor.com/production/7da827d66e9b56a846349698c70129a436421245/win32/arm64/user-setup/CursorUserSetup-arm64-0.48.6.exe) | [Download](https://downloads.cursor.com/production/7da827d66e9b56a846349698c70129a436421245/linux/x64/Cursor-0.48.6-x86_64.AppImage) | [Download](https://downloads.cursor.com/production/7da827d66e9b56a846349698c70129a436421245/linux/arm64/Cursor-0.48.6-aarch64.AppImage) |
