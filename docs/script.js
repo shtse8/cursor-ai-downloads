@@ -17,9 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
      * @returns {string} HTML string for the link or 'N/A'.
      */
     function createLinkCell(url) {
-        // Use Base64 encoded SVG Data URI for potentially better compatibility
-        const iconBase64Uri = 'path d="m23 12c0 6.0751-4.9249 11-11 11-6.07513 0-11-4.9249-11-11 0-6.07513 4.92487-11 11-11 6.0751 0 11 4.92487 11 11z" fill="#4a72ff"></path><path clip-rule="evenodd" d="m12 5c.5523 0 1 .44772 1 1v5.5858l2.2929-2.29291c.3905-.39052 1.0237-.39052 1.4142 0 .3905.39053.3905 1.02371 0 1.41421l-4 4c-.1875.1875-.4419.2929-.7071.2929s-.5196-.1054-.7071-.2929l-4.00001-4c-.39052-.3905-.39052-1.02368 0-1.41421.39053-.39052 1.02369-.39052 1.41422 0l2.29289 2.29291v-5.5858c0-.55228.4477-1 1-1zm-5 12c0-.5523.44772-1 1-1h8c.5523 0 1 .4477 1 1s-.4477 1-1 1h-8c-.55228 0-1-.4477-1-1z';
-        const linkContent = url ? `<a href="${url}" target="_blank" rel="noopener noreferrer"><img src="${iconBase64Uri}" alt="Download" width="16" height="16"></a>` : 'N/A';
+        // Use new Base64 encoded SVG Data URI provided by user
+        const iconBase64Uri = 'data:image/svg+xml;base64,PHN2ZyBmaWxsPSJub25lIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBpZD0iZmlfMTU2NDQ3ODIiPjxwYXRoIGQ9Im0yMyAxMmMwIDYuMDc1MS00LjkyNDkgMTEtMTEgMTEtNi4wNzUxMyAwLTExLTQuOTI0OS0xMS0xMSAwLTYuMDc1MTMgNC45MjQ4Ny0xMSAxMS0xMSA2LjA3NTEgMCAxMSA0LjkyNDg3IDExIDExeiIgZmlsbD0iIzRhNzJmZiI+PC9wYXRoPjxwYXRoIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0ibTEyIDVjLjU1MjMgMCAxIC40NDc3MiAxIDF2NS41ODU4bDIuMjkyOS0yLjI5MjljMS4zOTA1LS4zOTA1MiAxLjAyMzctLjM5MDUyIDEuNDE0MiAwIC4zOTA1LjM5MDUzLjM5MDUgMS4wMjM3MSAwIDEuNDE0MjFsLTQgNGMtLjE4NzUuMTg3NS0uNDQxOS4yOTI5LS43MDcxLjI5MjkgMC0uNTE5Ni0uMTA1NC0uNzA3MS0uMjkyOWwtNC4wMDAwMS00Yy0uMzkwNTItLjM5MDUtLjM5MDUyLTEuMDIzNjggMC0xLjQxNDIxLjM5MDUzLS4zOTA1MiAxLjAyMzY5LS4zOTA1MiAxLjQxNDIyIDBsMi4yOTI4OSAyLjI5MjljMXYtNS41ODU4YzAtLjU1MjI4LjQ0NzctMSAxLTF6bS01IDEyYzAtLjU1MjMuNDQ3NzItMSAxLTFoOGMuNTUyMyAwIDEgLjQ0NzcgMSAxcy0uNDQ3NyAxLTEgMWgtOGMtLjU1MjI4IDAtMS0uNDQ3Ny0xLTF6IiBmaWxsPSIjZmZmIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjwvcGF0aD48L3N2Zz4=';
+        // Adjust width and height to match the new SVG dimensions
+        const linkContent = url ? `<a href="${url}" target="_blank" rel="noopener noreferrer"><img src="${iconBase64Uri}" alt="Download" width="24" height="24"></a>` : 'N/A';
         return `<td>${linkContent}</td>`;
     }
 
