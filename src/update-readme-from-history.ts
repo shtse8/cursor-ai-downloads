@@ -23,11 +23,8 @@ function generateLink(url: string | undefined, label: string = 'Download'): stri
  * @returns The complete Markdown table as a string.
  */
 function generateMarkdownTable(versions: VersionHistoryEntry[]): string {
-  // Original multi-column header
-  const header = '| Version | Date | macOS Uni | macOS Intel | macOS Apple | Win x64 | Win ARM64 | Linux x64 | Linux ARM64 |';
-  const separator = '|---|---|---|---|---|---|---|---|---|';
-
-  const rows = versions.map(entry => {
+  // Only generate table rows, not header/separator
+  return versions.map(entry => {
     const { version, date, platforms } = entry;
     const displayDate = date || 'N/A';
 
@@ -40,9 +37,7 @@ function generateMarkdownTable(versions: VersionHistoryEntry[]): string {
     const linuxArm64Link = generateLink(platforms['linux-arm64']);
 
     return `| ${version} | ${displayDate} | ${macUniLink} | ${macX64Link} | ${macArm64Link} | ${winX64Link} | ${winArm64Link} | ${linuxX64Link} | ${linuxArm64Link} |`;
-  });
-
-  return [header, separator, ...rows].join('\n');
+  }).join('\n');
 }
 
 /**
