@@ -17,8 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
      * @returns {string} HTML string for the link or 'N/A'.
      */
     function createLinkCell(url) {
-        const iconUri = 'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22currentColor%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M.5%209.9a.5.5%200%200%201%20.5.5v2.5a1%201%200%200%200%201%201h12a1%201%200%200%200%201-1v-2.5a.5.5%200%200%201%201%200v2.5a2%202%200%200%201-2%202H2a2%202%200%200%201-2-2v-2.5a.5.5%200%200%201%20.5-.5z%22%2F%3E%3Cpath%20d%3D%22M7.646%2011.854a.5.5%200%200%200%20.708%200l3-3a.5.5%200%200%200-.708-.708L8.5%2010.293V1.5a.5.5%200%200%200-1%200v8.793L5.354%208.146a.5.5%200%201%200-.708.708l3%203z%22%2F%3E%3C%2Fsvg%3E';
-        const linkContent = url ? `<a href="${url}" target="_blank" rel="noopener noreferrer"><img src="${iconUri}" alt="Download" width="16" height="16"></a>` : 'N/A';
+        // Use Base64 encoded SVG Data URI for potentially better compatibility
+        const iconBase64Uri = 'path d="m23 12c0 6.0751-4.9249 11-11 11-6.07513 0-11-4.9249-11-11 0-6.07513 4.92487-11 11-11 6.0751 0 11 4.92487 11 11z" fill="#4a72ff"></path><path clip-rule="evenodd" d="m12 5c.5523 0 1 .44772 1 1v5.5858l2.2929-2.29291c.3905-.39052 1.0237-.39052 1.4142 0 .3905.39053.3905 1.02371 0 1.41421l-4 4c-.1875.1875-.4419.2929-.7071.2929s-.5196-.1054-.7071-.2929l-4.00001-4c-.39052-.3905-.39052-1.02368 0-1.41421.39053-.39052 1.02369-.39052 1.41422 0l2.29289 2.29291v-5.5858c0-.55228.4477-1 1-1zm-5 12c0-.5523.44772-1 1-1h8c.5523 0 1 .4477 1 1s-.4477 1-1 1h-8c-.55228 0-1-.4477-1-1z';
+        const linkContent = url ? `<a href="${url}" target="_blank" rel="noopener noreferrer"><img src="${iconBase64Uri}" alt="Download" width="16" height="16"></a>` : 'N/A';
         return `<td>${linkContent}</td>`;
     }
 
