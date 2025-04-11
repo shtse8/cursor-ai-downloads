@@ -3,7 +3,6 @@
 **Never miss a version!** Cursor updating too fast? Need that *specific* older build? This is your **ultimate archive** for official Cursor AI download links. We track every version across all platforms, giving you the power to choose. Stop searching, start downloading!
 
 [![Update Cursor Links Workflow](https://github.com/shtse8/cursor-ai-downloads/actions/workflows/update-cursor-links.yml/badge.svg)](https://github.com/shtse8/cursor-ai-downloads/actions/workflows/update-cursor-links.yml)
-[![Buy Me a Coffee](https://img.shields.io/badge/Support%20This%20Project-Buy%20Me%20a%20Coffee-ffdd00?logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/shtse8)
 
 ---
 
