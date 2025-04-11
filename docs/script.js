@@ -17,10 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
      * @returns {string} HTML string for the link or 'N/A'.
      */
     function createLinkCell(url) {
-        // Use VERIFIED Base64 encoded SVG Data URI
-        const iconBase64Uri = 'data:image/svg+xml;base64,PHN2ZyBmaWxsPSJub25lIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBpZD0iZmlfMTU2NDQ3ODIiPjxwYXRoIGQ9Im0yMyAxMmMwIDYuMDc1MS00LjkyNDkgMTEtMTEgMTEtNi4wNzUxMyAwLTExLTQuOTI0OS0xMS0xMSAwLTYuMDc1MTMgNC45MjQ4Ny0xMSAxMS0xMSA2LjA3NTEgMCAxMSA0LjkyNDg3IDExIDExeiIgZmlsbD0iIzRhNzJmZiI+PC9wYXRoPjxwYXRoIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0ibTEyIDVjLjU1MjMgMCAxIC40NDc3MiAxIDF2NS41ODU4bDIuMjkyOS0yLjI5MjkxYy4zOTA1LS4zOTA1MiAxLjAyMzctLjM5MDUyIDEuNDE0MiAwIC4zOTA1LjM5MDUzLjM5MDUgMS4wMjM3MSAwIDEuNDE0MjFsLTQgNGMtLjE4NzUuMTg3NS0uNDQxOS4yOTI5LS43MDcxLjI5MjlzLS41MTk2LS4xMDU0LS43MDcxLS4yOTI5bC00LjAwMDAxLTRjLS4zOTA1Mi0uMzkwNS0uMzkwNTItMS4wMjM2OCAwLTEuNDE0MjEuMzkwNTMtLjM5MDUyIDEuMDIzNjktLjM5MDUyIDEuNDE0MjIgMGwyLjI5Mjg5IDIuMjkyOTF2LTUuNTg1OGMwLS41NTIyOC40NDc3LTEgMS0xem0tNSAxMmMwLS41NTIzLjQ0NzcyLTEgMS0xaDhjLjU1MjMgMCAxIC40NDc3IDEgMXMtLjQ0NzcgMS0xIDFoLThjLS41NTIyOCAwLTEtLjQ0NzctMS0xeiIgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIj48L3BhdGg+PC9zdmc+';
-        // Adjust width and height to match the new SVG dimensions
-        const linkContent = url ? `<a href="${url}" target="_blank" rel="noopener noreferrer"><img src="${iconBase64Uri}" alt="Download" width="24" height="24"></a>` : 'N/A';
+        // Use direct image path provided by user, relative to docs/index.html
+        const iconPath = '../assets/download.png';
+        // Set width and height for consistency
+        const linkContent = url ? `<a href="${url}" target="_blank" rel="noopener noreferrer"><img src="${iconPath}" alt="Download" width="16" height="16"></a>` : 'N/A';
         return `<td>${linkContent}</td>`;
     }
 

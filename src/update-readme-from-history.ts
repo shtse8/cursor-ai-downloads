@@ -23,9 +23,11 @@ async function updateReadme() {
  // Create new download section
     // Center align columns 3-9 (download links)
     const tableHeader = '| Version | Date | macOS Universal | macOS Intel | macOS Apple Silicon | Windows x64 | Windows ARM64 | Linux x64 | Linux ARM64 |\n|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|';
-    // Use VERIFIED Base64 encoded SVG Data URI
-    const iconBase64Uri = 'data:image/svg+xml;base64,PHN2ZyBmaWxsPSJub25lIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBpZD0iZmlfMTU2NDQ3ODIiPjxwYXRoIGQ9Im0yMyAxMmMwIDYuMDc1MS00LjkyNDkgMTEtMTEgMTEtNi4wNzUxMyAwLTExLTQuOTI0OS0xMS0xMSAwLTYuMDc1MTMgNC45MjQ4Ny0xMSAxMS0xMSA2LjA3NTEgMCAxMSA0LjkyNDg3IDExIDExeiIgZmlsbD0iIzRhNzJmZiI+PC9wYXRoPjxwYXRoIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0ibTEyIDVjLjU1MjMgMCAxIC40NDc3MiAxIDF2NS41ODU4bDIuMjkyOS0yLjI5MjkxYy4zOTA1LS4zOTA1MiAxLjAyMzctLjM5MDUyIDEuNDE0MiAwIC4zOTA1LjM5MDUzLjM5MDUgMS4wMjM3MSAwIDEuNDE0MjFsLTQgNGMtLjE4NzUuMTg3NS0uNDQxOS4yOTI5LS43MDcxLjI5MjlzLS41MTk2LS4xMDU0LS43MDcxLS4yOTI5bC00LjAwMDAxLTRjLS4zOTA1Mi0uMzkwNS0uMzkwNTItMS4wMjM2OCAwLTEuNDE0MjEuMzkwNTMtLjM5MDUyIDEuMDIzNjktLjM5MDUyIDEuNDE0MjIgMGwyLjI5Mjg5IDIuMjkyOTF2LTUuNTg1OGMwLS41NTIyOC40NDc3LTEgMS0xem0tNSAxMmMwLS41NTIzLjQ0NzcyLTEgMS0xaDhjLjU1MjMgMCAxIC40NDc3IDEgMXMtLjQ0NzcgMS0xIDFoLThjLS41NTIyOCAwLTEtLjQ0NzctMS0xeiIgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIj48L3BhdGg+PC9zdmc+';
-    const createDownloadLink = (url: string | undefined) => url ? `[![Download](${iconBase64Uri})](${url})` : '-';
+    // Use direct image path provided by user
+    const iconPath = 'assets/download.png'; // Relative to README.md at root
+    // Set width for Markdown image (optional, but good practice)
+    const createDownloadLink = (url: string | undefined) => url ? `[![Download](${iconPath}?raw=true "Download")]( ${url})` : '-';
+
 
     const downloadTable = versionHistory.slice(0, 20).map((entry) => {
       const platforms = entry.platforms;
