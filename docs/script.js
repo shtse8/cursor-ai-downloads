@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
      * @returns {string} HTML string for the link or 'N/A'.
      */
     function createLinkCell(url) {
-        const linkContent = url ? `<a href="${url}" target="_blank" rel="noopener noreferrer">Download</a>` : 'N/A';
+        const linkContent = url ? `<a href="${url}" target="_blank" rel="noopener noreferrer">⬇️</a>` : 'N/A';
         return `<td>${linkContent}</td>`;
     }
 

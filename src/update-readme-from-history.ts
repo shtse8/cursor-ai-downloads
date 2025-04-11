@@ -24,7 +24,7 @@ async function updateReadme() {
     const tableHeader = '| Version | Date | macOS Universal | macOS Intel | macOS Apple Silicon | Windows x64 | Windows ARM64 | Linux x64 | Linux ARM64 |\n|---|---|---|---|---|---|---|---|---|';
     const downloadTable = versionHistory.slice(0, 20).map((entry) => {
       const platforms = entry.platforms;
-      return `| ${entry.version} | ${entry.date} | ${platforms['darwin-universal'] ? `[Download](${platforms['darwin-universal']})` : '-'} | ${platforms['darwin-x64'] ? `[Download](${platforms['darwin-x64']})` : '-'} | ${platforms['darwin-arm64'] ? `[Download](${platforms['darwin-arm64']})` : '-'} | ${platforms['win32-x64'] ? `[Download](${platforms['win32-x64']})` : '-'} | ${platforms['win32-arm64'] ? `[Download](${platforms['win32-arm64']})` : '-'} | ${platforms['linux-x64'] ? `[Download](${platforms['linux-x64']})` : '-'} | ${platforms['linux-arm64'] ? `[Download](${platforms['linux-arm64']})` : '-'} |`;
+      return `| ${entry.version} | ${entry.date} | ${platforms['darwin-universal'] ? `[⬇️](${platforms['darwin-universal']})` : '-'} | ${platforms['darwin-x64'] ? `[⬇️](${platforms['darwin-x64']})` : '-'} | ${platforms['darwin-arm64'] ? `[⬇️](${platforms['darwin-arm64']})` : '-'} | ${platforms['win32-x64'] ? `[⬇️](${platforms['win32-x64']})` : '-'} | ${platforms['win32-arm64'] ? `[⬇️](${platforms['win32-arm64']})` : '-'} | ${platforms['linux-x64'] ? `[⬇️](${platforms['linux-x64']})` : '-'} | ${platforms['linux-arm64'] ? `[⬇️](${platforms['linux-arm64']})` : '-'} |`;
     }).join('\n');
     const newDownloadSection = `## Download Links for Previous Versions\n\n${tableHeader}\n${downloadTable}`;
 
