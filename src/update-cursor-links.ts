@@ -284,22 +284,23 @@ function updateVersionHistory(version: string, date: string, results: ResultMap)
 async function main(): Promise<void> {
   try {
     const startTime = Date.now();
-    console.log(`Starting update process at ${new Date().toISOString()}`);
+    // console.log(`Starting update process at ${new Date().toISOString()}`); // Removed for cleaner GH Action output
 
     // Run the update
     const updated = await updateReadme();
     const elapsedTime = Date.now() - startTime;
 
-    if (updated) {
-      console.log(`Update completed successfully in ${elapsedTime}ms. Found new version.`);
-    } else {
-      console.log(`Update completed in ${elapsedTime}ms. No new version found.`);
-    }
+    // Informational logs removed for cleaner GH Action output
+    // if (updated) {
+    //   console.log(`Update completed successfully in ${elapsedTime}ms. Found new version.`);
+    // } else {
+    //   console.log(`Update completed in ${elapsedTime}ms. No new version found.`);
+    // }
 
     // Double-check version history JSON file exists and is valid at the end
     const historyJson = readVersionHistory(); // Use util which handles existence and parsing errors
     if (historyJson.versions.length > 0) {
-        console.log('Verified version-history.json exists and contains version data.');
+        // console.log('Verified version-history.json exists and contains version data.'); // Removed for cleaner GH Action output
 
         // Verify that the latest version from README is in version-history.json
         const readmeContent = readFileContent('README.md');
@@ -310,13 +311,13 @@ async function main(): Promise<void> {
             const latestVersionInReadme = versionMatch[1];
             const latestDateInReadme = versionMatch[2];
 
-            console.log(`Latest version in README.md: ${latestVersionInReadme} (${latestDateInReadme})`);
+            // console.log(`Latest version in README.md: ${latestVersionInReadme} (${latestDateInReadme})`); // Removed for cleaner GH Action output
 
             // Check if this version exists in history
             const versionExists = historyJson.versions.some((v: VersionHistoryEntry) => v.version === latestVersionInReadme);
             if (!versionExists) {
-              console.warn(`WARNING: Version ${latestVersionInReadme} is in README.md but not in version-history.json.`);
-              console.log(`Attempting to extract data from README.md and update version-history.json...`);
+              console.warn(`WARNING: Version ${latestVersionInReadme} is in README.md but not in version-history.json.`); // Keep warning
+              // console.log(`Attempting to extract data from README.md and update version-history.json...`); // Removed for cleaner GH Action output
 
               // Extract URLs for this version from README
               const sectionRegex = new RegExp(`\\| ${latestVersionInReadme} \\| ${latestDateInReadme} \\| (.*?) \\| (.*?) \\| (.*?) \\|`);
@@ -385,7 +386,7 @@ async function main(): Promise<void> {
 
                   // Save the updated history using util function
                   saveVersionHistory(historyJson, '.readme-sync-backup');
-                  console.log(`Successfully added version ${latestVersionInReadme} from README.md to version-history.json`);
+                  // console.log(`Successfully added version ${latestVersionInReadme} from README.md to version-history.json`); // Removed for cleaner GH Action output
                 } else {
                   console.error(`Failed to extract platform links for version ${latestVersionInReadme}`);
                 }
@@ -398,6 +399,9 @@ async function main(): Promise<void> {
     } else { // Closes if (historyJson.versions.length > 0)
          console.warn('Warning: version-history.json check failed (file missing, invalid, or empty).');
     }
+    // Output the result for GitHub Actions
+    console.log(`update_result=${updated}`);
+
   } catch (error) {
     console.error('Critical error during update process:', error instanceof Error ? error.message : 'Unknown error');
     // Any GitHub Action will mark the workflow as failed if the process exits with non-zero
