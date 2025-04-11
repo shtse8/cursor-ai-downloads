@@ -17,7 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
      * @returns {string} HTML string for the link or 'N/A'.
      */
     function createLinkCell(url) {
-        const linkContent = url ? `<a href="${url}" target="_blank" rel="noopener noreferrer">⬇️</a>` : 'N/A';
+        const iconUri = 'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22currentColor%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M.5%209.9a.5.5%200%200%201%20.5.5v2.5a1%201%200%200%200%201%201h12a1%201%200%200%200%201-1v-2.5a.5.5%200%200%201%201%200v2.5a2%202%200%200%201-2%202H2a2%202%200%200%201-2-2v-2.5a.5.5%200%200%201%20.5-.5z%22%2F%3E%3Cpath%20d%3D%22M7.646%2011.854a.5.5%200%200%200%20.708%200l3-3a.5.5%200%200%200-.708-.708L8.5%2010.293V1.5a.5.5%200%200%200-1%200v8.793L5.354%208.146a.5.5%200%201%200-.708.708l3%203z%22%2F%3E%3C%2Fsvg%3E';
+        const linkContent = url ? `<a href="${url}" target="_blank" rel="noopener noreferrer"><img src="${iconUri}" alt="Download" width="16" height="16"></a>` : 'N/A';
         return `<td>${linkContent}</td>`;
     }
 

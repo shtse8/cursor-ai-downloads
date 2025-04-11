@@ -23,10 +23,13 @@ async function updateReadme() {
  // Create new download section
     // Center align columns 3-9 (download links)
     const tableHeader = '| Version | Date | macOS Universal | macOS Intel | macOS Apple Silicon | Windows x64 | Windows ARM64 | Linux x64 | Linux ARM64 |\n|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|';
+    const iconUri = 'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22currentColor%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M.5%209.9a.5.5%200%200%201%20.5.5v2.5a1%201%200%200%200%201%201h12a1%201%200%200%200%201-1v-2.5a.5.5%200%200%201%201%200v2.5a2%202%200%200%201-2%202H2a2%202%200%200%201-2-2v-2.5a.5.5%200%200%201%20.5-.5z%22%2F%3E%3Cpath%20d%3D%22M7.646%2011.854a.5.5%200%200%200%20.708%200l3-3a.5.5%200%200%200-.708-.708L8.5%2010.293V1.5a.5.5%200%200%200-1%200v8.793L5.354%208.146a.5.5%200%201%200-.708.708l3%203z%22%2F%3E%3C%2Fsvg%3E';
+    const createDownloadLink = (url: string | undefined) => url ? `[![Download](${iconUri})](${url})` : '-';
+
     const downloadTable = versionHistory.slice(0, 20).map((entry) => {
       const platforms = entry.platforms;
-      // Links remain the same, alignment is controlled by header separator
-      return `| ${entry.version} | ${entry.date} | ${platforms['darwin-universal'] ? `[⬇️](${platforms['darwin-universal']})` : '-'} | ${platforms['darwin-x64'] ? `[⬇️](${platforms['darwin-x64']})` : '-'} | ${platforms['darwin-arm64'] ? `[⬇️](${platforms['darwin-arm64']})` : '-'} | ${platforms['win32-x64'] ? `[⬇️](${platforms['win32-x64']})` : '-'} | ${platforms['win32-arm64'] ? `[⬇️](${platforms['win32-arm64']})` : '-'} | ${platforms['linux-x64'] ? `[⬇️](${platforms['linux-x64']})` : '-'} | ${platforms['linux-arm64'] ? `[⬇️](${platforms['linux-arm64']})` : '-'} |`;
+      // Use image links, alignment is controlled by header separator
+      return `| ${entry.version} | ${entry.date} | ${createDownloadLink(platforms['darwin-universal'])} | ${createDownloadLink(platforms['darwin-x64'])} | ${createDownloadLink(platforms['darwin-arm64'])} | ${createDownloadLink(platforms['win32-x64'])} | ${createDownloadLink(platforms['win32-arm64'])} | ${createDownloadLink(platforms['linux-x64'])} | ${createDownloadLink(platforms['linux-arm64'])} |`;
     }).join('\n');
     const newDownloadSection = `## Download Links for Previous Versions\n\n${tableHeader}\n${downloadTable}`;
 
