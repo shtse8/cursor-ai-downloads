@@ -30,7 +30,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5 # Use latest configure-pages action
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3 # Use latest upload-pages-artifact action
+        uses: actions/upload-pages-artifact@v4 # Use latest upload-pages-artifact action
         with:
           # Upload entire repository
           path: './docs' # Specify the folder containing the site files
