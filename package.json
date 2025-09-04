@@ -2,7 +2,7 @@
   "name": "cursor-downloads-tracker",
   "version": "1.0.0",
   "devDependencies": {
-    "@types/node": "^22.14.0",
+    "@types/node": "^24.0.0",
     "bun-types": "latest",
     "typescript": "^5.2.2"
   },
