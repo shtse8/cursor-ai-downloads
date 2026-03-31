@@ -42,4 +42,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 # Use latest deploy-pages action
+        uses: actions/deploy-pages@v5 # Use latest deploy-pages action
