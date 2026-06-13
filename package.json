@@ -4,7 +4,7 @@
   "devDependencies": {
     "@types/node": "^22.14.0",
     "bun-types": "latest",
-    "typescript": "^5.2.2"
+    "typescript": "^6.0.0"
   },
   "description": "Automatically tracks and updates Cursor download links",
   "scripts": {
