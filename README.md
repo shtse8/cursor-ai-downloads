@@ -1,9 +1,8 @@
 # Cursor AI Downloads Archive 🚀
 
 <p align="center">
-  <img src="docs/banner.png" alt="cursor-ai-downloads banner" width="100%" />
+  <img src="https://mark.sylphx.com/api/v1/banner?type=aurora&theme=tokyonight&text=cursor+ai+downloads&desc=Track+and+download+any+official+version+of+the+Cursor+AI+code+editor.+Automated+&height=200&animation=rise&credit=0" alt="cursor-ai-downloads — Sylphx Mark banner" width="100%" />
 </p>
-
 
 **Never miss a version!** Cursor updating too fast? Need that *specific* older build? This is your **ultimate archive** for official Cursor AI download links. We track every version across all platforms, giving you the power to choose. Stop searching, start downloading!
 
