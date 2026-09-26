@@ -1,7 +1,7 @@
 # Cursor AI Downloads
 
 <p align="center">
-  <img src="https://mark.sylphx.com/api/v1/mark/hero?type=aurora&theme=tokyonight&text=cursor+ai+downloads&desc=Track+and+download+any+official+version+of+the+Cursor+AI+code+editor.+Automated+hourly+updates%E2%80%A6&height=200&animation=rise" alt="cursor-ai-downloads — Sylphx Mark banner" width="100%" />
+  <img src="https://mark.sylphx.com/api/v1/mark/hero.svg?type=waving&theme=dark&text=Cursor%20AI%20Downloads&desc=Download%20links%20for%20every%20Cursor%20version" alt="Cursor AI Downloads" width="100%" />
 </p>
 
 Official download links for every version of the [Cursor](https://cursor.com)
