@@ -35,6 +35,7 @@ interface ResultMap {
 
 interface DownloadResponse {
   downloadUrl: string;
+  version?: string;
 }
 
 // Types are now imported from ./utils
@@ -62,13 +63,13 @@ const PLATFORMS: PlatformMap = {
 /**
  * Fetch latest download URL for a platform
  */
-async function fetchLatestDownloadUrl(platform: string): Promise<string | null> {
+async function fetchLatestDownloadUrl(platform: string): Promise<VersionInfo | null> {
   try {
     // Use AbortController for timeout with standard fetch
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 seconds timeout
 
-    const response = await fetch(`https://www.cursor.com/api/download?platform=${platform}&releaseTrack=latest`, {
+    const response = await fetch(`https://cursor.com/api/download?platform=${platform}&releaseTrack=latest`, {
       headers: {
         'User-Agent': 'Cursor-Version-Checker',
         'Cache-Control': 'no-cache',
@@ -83,7 +84,8 @@ async function fetchLatestDownloadUrl(platform: string): Promise<string | null> 
     }
 
     const data = await response.json() as DownloadResponse;
-    return data.downloadUrl;
+    // Download file names no longer carry the version, so prefer the API's own field.
+    return { url: data.downloadUrl, version: data.version || extractVersion(data.downloadUrl) };
   } catch (error) {
     console.error(`Error fetching download URL for platform ${platform}:`, error instanceof Error ? error.message : String(error));
     return null;
@@ -109,11 +111,11 @@ async function updateReadme(): Promise<boolean> {
 
     for (let i = 0; i < osData.platforms.length; i++) {
       const platform = osData.platforms[i];
-      const url = await fetchLatestDownloadUrl(platform);
+      const info = await fetchLatestDownloadUrl(platform);
 
-      if (url) {
-        const version = extractVersion(url);
-        results[osKey][platform] = { url, version };
+      if (info) {
+        const { version } = info;
+        results[osKey][platform] = info;
 
         // Track the highest version number using localeCompare for proper sorting
         if (version !== 'Unknown' && version.localeCompare(latestVersion, undefined, { numeric: true, sensitivity: 'base' }) > 0) {
@@ -136,8 +138,7 @@ async function updateReadme(): Promise<boolean> {
   // Check if this version already exists in the version history
   const existingVersionIndex = history.versions.findIndex((entry: VersionHistoryEntry) => entry.version === latestVersion);
   if (existingVersionIndex !== -1) {
-    // console.log(`Version ${latestVersion} already exists in version history, no update needed`); // Commented out for GH Action
-    // return false; // REMOVED: Allow function to complete to ensure final output is printed
+    return false;
   }
 
   // New version found, update both version-history.json and README.md

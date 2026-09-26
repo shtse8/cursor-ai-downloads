@@ -30,9 +30,7 @@ jobs:
 
       - name: Run update script
         id: update-script
-        run: |
-          UPDATE_RESULT=$(bun src/update-cursor-links.ts)
-          echo "update_result=$UPDATE_RESULT" >> $GITHUB_OUTPUT
+        run: bun src/update-cursor-links.ts | tee -a "$GITHUB_OUTPUT"
 
       - name: Run README update script # Regenerate table with latest 10 versions
         run: bun src/update-readme-from-history.ts
