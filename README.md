@@ -1,16 +1,20 @@
-# Cursor AI Downloads Archive 🚀
+# Cursor AI Downloads
 
 <p align="center">
   <img src="https://mark.sylphx.com/api/v1/mark/hero?type=aurora&theme=tokyonight&text=cursor+ai+downloads&desc=Track+and+download+any+official+version+of+the+Cursor+AI+code+editor.+Automated+hourly+updates%E2%80%A6&height=200&animation=rise" alt="cursor-ai-downloads — Sylphx Mark banner" width="100%" />
 </p>
 
-**Never miss a version!** Cursor updating too fast? Need that *specific* older build? This is your **ultimate archive** for official Cursor AI download links. We track every version across all platforms, giving you the power to choose. Stop searching, start downloading!
+Official download links for every version of the [Cursor](https://cursor.com)
+code editor on macOS, Windows and Linux, including older versions that
+Cursor's website no longer offers. The links point to Cursor's own download
+servers; this repository stores no installers. A GitHub Actions job checks for
+a new version every hour.
 
 [![Update Cursor Links Workflow](https://github.com/shtse8/cursor-ai-downloads/actions/workflows/update-cursor-links.yml/badge.svg)](https://github.com/shtse8/cursor-ai-downloads/actions/workflows/update-cursor-links.yml)
 
 ---
 
-## Quick Download: Latest Version ✨
+## Latest version
 
 <!-- LATEST_VERSION_DETAILS_START -->
 
@@ -25,9 +29,9 @@
 ---
 
 
-➡️ **For the complete, searchable version history, visit the [GitHub Pages site](https://shtse8.github.io/cursor-ai-downloads/).**
+Search the full history on the [website](https://shtse8.github.io/cursor-ai-downloads/).
 
-## Download Links for Previous Versions
+## Previous versions
 
 <!-- TABLE_START -->
 | Version | Date | macOS Universal | macOS Intel | macOS Apple Silicon | Windows x64 | Windows ARM64 | Linux x64 | Linux ARM64 |
@@ -58,18 +62,25 @@
 
 ---
 
-## Automation ⚙️
+## How it updates
 
-This repository uses GitHub Actions to automatically check for new Cursor versions **hourly**. When a new version is detected, the `version-history.json` file and this README are updated automatically. You can see the status of the update workflow via the badge at the top.
+A GitHub Actions job asks Cursor's download API for the latest version every
+hour. When the version is new, it adds it to `version-history.json` and
+regenerates the tables in this README.
+
+The job recorded nothing between April 2025 (0.48.8) and September 2026
+because of a bug in the job, now fixed. Versions released in that period are
+missing from the history.
 
 ---
 
-## Contributing 🤝
+## Contributing
 
-While the primary update mechanism is automated, contributions for fixing historical data or improving scripts are welcome. Please refer to the project's contribution guidelines (if available) or open an issue.
+Fixes to the history or the scripts are welcome: open an issue or a pull
+request.
 
 ---
 
-## License 📜
+## License
 
 This project (the tracking scripts and data organization) is licensed under the [MIT License](LICENSE). Download links provided point to official Cursor software, which is subject to its own licensing terms.
